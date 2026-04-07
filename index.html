@@ -235,15 +235,15 @@ section {
 
 /* Video container */
 .video-wrap {
-  max-width: 640px;
+  max-width: 320px;
   margin: 0 auto 2rem;
-  border-radius: var(--radius-lg);
+  border-radius: 28px;
   overflow: hidden;
-  border: 1px solid var(--border);
+  border: 2px solid rgba(46,213,143,.35);
   background: var(--bg2);
-  box-shadow: 0 20px 60px rgba(0,0,0,.4), 0 0 40px var(--accent-glow);
+  box-shadow: 0 30px 80px rgba(0,0,0,.6), 0 0 60px rgba(46,213,143,.25);
   position: relative;
-  aspect-ratio: 16/9;
+  aspect-ratio: 9/16;
 }
 .video-wrap video,
 .video-wrap iframe {
@@ -1312,15 +1312,9 @@ footer a:hover { opacity: .8; }
       Un chatbot inteligente en WhatsApp que responde, toma pedidos y cierra ventas por ti — las 24 horas, los 7 días de la semana.
     </p>
 
-    <!-- VIDEO PRINCIPAL -->
+    <!-- VIDEO PRINCIPAL (vertical 9:16) -->
     <div class="video-wrap">
-      <!-- REEMPLAZA con tu video real: -->
-      <!-- <video src="tu-video.mp4" autoplay muted loop playsinline></video> -->
-      <!-- O usa un iframe de YouTube/Vimeo -->
-      <div class="video-placeholder">
-        <div class="play-icon">▶</div>
-        <span>Mira el chatbot en acción</span>
-      </div>
+      <video src="promo-qr.mov" autoplay muted loop playsinline controls preload="metadata"></video>
     </div>
 
     <div class="cta-group">
@@ -1365,11 +1359,7 @@ footer a:hover { opacity: .8; }
       </div>
 
       <div class="video-wrap" style="margin:0 auto 1.5rem;">
-        <!-- ESPACIO PARA EL VIDEO DEL SISTEMA QR - reemplazar src cuando esté disponible -->
-        <div class="video-placeholder">
-          <div class="play-icon">▶</div>
-          <span>Video del sistema QR (próximamente)</span>
-        </div>
+        <video src="promo-qr.mov" autoplay muted loop playsinline controls preload="metadata"></video>
       </div>
 
       <a href="https://wa.me/593968429494?text=Hola%2C%20quiero%20la%20promo%20del%20sistema%20de%20control%20de%20personal%20por%20QR" target="_blank" rel="noopener" class="cta-btn cta-primary">
@@ -2006,24 +1996,84 @@ window.addEventListener('scroll', () => {
   }
 });
 
-// FAQ Bot
+// FAQ Bot conectado a n8n
+window.addEventListener('DOMContentLoaded', function(){
+const N8N_WEBHOOK_URL = 'https://contabilidad-mateai-n8n.dtuoap.easypanel.host/webhook/mateai-chat';
+const SESSION_ID = 'web-' + (localStorage.getItem('mateai_sid') || (()=>{const s=Date.now()+'-'+Math.random().toString(36).slice(2,9);localStorage.setItem('mateai_sid',s);return s;})());
+
 const faqBot = document.getElementById('faqBot');
 const faqBody = document.getElementById('faqBody');
-const faqs = {
-  precio: "Cada sistema se cotiza según necesidades. El sistema de Control de Personal vía QR está en promoción 72h. Escríbenos por WhatsApp para tu cotización.",
-  menus: "Sí. Hacemos menús digitales con QR, calificación, pedidos por WhatsApp y se pueden conectar con cocina, caja e impresoras de comandas.",
-  webs: "Diseñamos páginas web profesionales a medida para abogados, restaurantes, clínicas, tiendas y cualquier negocio.",
-  qr: "El sistema de Control de Personal vía QR permite que tu equipo registre asistencia escaneando un código. Reportes automáticos de horarios y faltas.",
-  tiempo: "Los menús y sitios web se entregan entre 3 y 7 días. El sistema QR queda activo en menos de 48h.",
-  contacto: "Escríbenos directo por WhatsApp al +593 96 842 9494 — respondemos al instante."
-};
-function faqAsk(key,label){
-  const u=document.createElement('div');u.className='faq-msg user';u.textContent=label;faqBody.appendChild(u);
-  setTimeout(()=>{const b=document.createElement('div');b.className='faq-msg bot';b.textContent=faqs[key];faqBody.appendChild(b);faqBody.scrollTop=faqBody.scrollHeight;},400);
+const faqInput = document.getElementById('faqInput');
+const faqSend = document.getElementById('faqSend');
+
+function addMsg(text, who){
+  const m=document.createElement('div');
+  m.className='faq-msg '+who;
+  m.textContent=text;
+  faqBody.appendChild(m);
+  faqBody.scrollTop=faqBody.scrollHeight;
+  return m;
+}
+
+function showTyping(){
+  const m=document.createElement('div');
+  m.className='faq-msg bot typing';
+  m.id='faqTyping';
+  m.innerHTML='<span></span><span></span><span></span>';
+  faqBody.appendChild(m);
   faqBody.scrollTop=faqBody.scrollHeight;
 }
+function hideTyping(){const t=document.getElementById('faqTyping');if(t)t.remove();}
+
+async function sendToN8n(message){
+  const opts=document.querySelector('.faq-bot-options');
+  if(opts) opts.style.display='none';
+  addMsg(message,'user');
+  showTyping();
+  try{
+    const res = await fetch(N8N_WEBHOOK_URL,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({message:message, sessionId:SESSION_ID})
+    });
+    const data = await res.json();
+    hideTyping();
+    addMsg(data.reply || data.output || 'Lo siento, no pude procesar tu pregunta. Escríbenos por WhatsApp.','bot');
+  }catch(e){
+    hideTyping();
+    addMsg('Hubo un problema de conexión. Escríbenos por WhatsApp: +593 96 842 9494','bot');
+  }
+}
+
+function faqAsk(key,label){ sendToN8n(label); }
+
+faqSend.addEventListener('click',()=>{
+  const v=faqInput.value.trim();
+  if(!v) return;
+  faqInput.value='';
+  sendToN8n(v);
+});
+faqInput.addEventListener('keydown',(e)=>{
+  if(e.key==='Enter'){ e.preventDefault(); faqSend.click(); }
+});
+
 document.getElementById('faqToggle').addEventListener('click',()=>faqBot.classList.toggle('open'));
+window.faqAsk = faqAsk;
+}); // end DOMContentLoaded
 </script>
+
+<style>
+.faq-msg.typing{display:flex;gap:6px;padding:14px 18px;}
+.faq-msg.typing span{width:8px;height:8px;border-radius:50%;background:#2ed58f;animation:typingDot 1.4s infinite ease-in-out;}
+.faq-msg.typing span:nth-child(2){animation-delay:.2s;}
+.faq-msg.typing span:nth-child(3){animation-delay:.4s;}
+@keyframes typingDot{0%,60%,100%{opacity:.3;transform:translateY(0);}30%{opacity:1;transform:translateY(-4px);}}
+.faq-bot-input{display:flex;gap:8px;padding:12px;border-top:1px solid rgba(255,255,255,.08);background:rgba(0,0,0,.3);}
+.faq-bot-input input{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#fff;padding:12px 14px;border-radius:10px;font-family:inherit;font-size:14px;outline:none;}
+.faq-bot-input input:focus{border-color:#2ed58f;}
+.faq-bot-input button{background:linear-gradient(135deg,#2ed58f,#1e90ff);color:#06070b;border:none;padding:0 18px;border-radius:10px;font-weight:800;cursor:pointer;font-size:14px;}
+.faq-bot-input button:hover{transform:scale(1.05);}
+</style>
 
 <!-- FAQ Chatbot -->
 <div class="faq-bot" id="faqBot">
@@ -2040,9 +2090,286 @@ document.getElementById('faqToggle').addEventListener('click',()=>faqBot.classLi
       <button class="faq-opt" onclick="faqAsk('tiempo','¿En cuánto tiempo lo tengo?')">¿En cuánto tiempo lo tengo?</button>
       <button class="faq-opt" onclick="faqAsk('contacto','Quiero hablar con alguien')">Quiero hablar con alguien</button>
     </div>
+    <div class="faq-bot-input">
+      <input id="faqInput" type="text" placeholder="Escribe tu pregunta..." autocomplete="off">
+      <button id="faqSend">Enviar</button>
+    </div>
   </div>
   <button class="faq-bot-toggle" id="faqToggle" aria-label="Abrir asistente">💬</button>
 </div>
+
+<!-- ============================================
+     LEAD FORM MODAL
+     ============================================ -->
+<div id="leadModal" class="lead-modal">
+  <div class="lead-modal-backdrop" data-close-modal></div>
+  <div class="lead-modal-card">
+    <button class="lead-modal-close" data-close-modal aria-label="Cerrar">×</button>
+    <div class="lead-modal-header">
+      <div class="lead-modal-eyebrow">● Solo 1 paso más</div>
+      <h3>Cuéntanos un poco<br>antes de hablar contigo</h3>
+      <p>Para preparar tu cotización personalizada y darte una atención más rápida.</p>
+    </div>
+    <form id="leadForm" class="lead-form">
+      <div class="lead-field">
+        <label>Nombre completo *</label>
+        <input type="text" name="nombre" required placeholder="Ej. Juan Pérez">
+      </div>
+      <div class="lead-field">
+        <label>WhatsApp *</label>
+        <input type="tel" name="whatsapp" required placeholder="Ej. 0968429494">
+      </div>
+      <div class="lead-field">
+        <label>Email *</label>
+        <input type="email" name="email" required placeholder="tu@correo.com">
+      </div>
+      <div class="lead-field">
+        <label>Tipo de negocio *</label>
+        <select name="negocio" required>
+          <option value="">Selecciona...</option>
+          <option>Restaurante / Bar / Cafetería</option>
+          <option>Estudio jurídico / Abogado</option>
+          <option>Tienda / Comercio</option>
+          <option>Clínica / Salud</option>
+          <option>Servicios profesionales</option>
+          <option>Otro</option>
+        </select>
+      </div>
+      <div class="lead-field">
+        <label>¿Qué servicio te interesa? *</label>
+        <select name="servicio" required>
+          <option value="">Selecciona...</option>
+          <option>Sistema control personal QR</option>
+          <option>Menú digital interactivo</option>
+          <option>Página web profesional</option>
+          <option>Chatbot WhatsApp</option>
+          <option>Sistema administrativo a medida</option>
+          <option>Otro / No estoy seguro</option>
+        </select>
+      </div>
+      <button type="submit" class="lead-submit-btn">
+        <span class="btn-text">Continuar a WhatsApp →</span>
+        <span class="btn-loader">Enviando...</span>
+      </button>
+      <p class="lead-privacy">🔒 Tus datos son privados. Te contactaremos solo para esta solicitud.</p>
+    </form>
+  </div>
+</div>
+
+<!-- ============================================
+     ADMIN PANEL (oculto, solo con ?key=)
+     ============================================ -->
+<div id="adminPanel" class="admin-panel">
+  <div class="admin-card">
+    <h2>📊 MateAI · Panel Admin</h2>
+    <div id="adminStats" class="admin-stats">Cargando...</div>
+    <h3 style="margin-top:2rem;color:#2ed58f;">Últimos leads</h3>
+    <div id="adminLeads" class="admin-leads"></div>
+  </div>
+</div>
+
+<style>
+/* ===== Lead Modal ===== */
+.lead-modal{position:fixed;inset:0;z-index:99999;display:none;align-items:center;justify-content:center;padding:1rem;}
+.lead-modal.open{display:flex;}
+.lead-modal-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(8px);}
+.lead-modal-card{position:relative;background:linear-gradient(180deg,#0f1419,#06070b);border:1px solid rgba(46,213,143,.3);border-radius:24px;padding:2.5rem 2rem;max-width:480px;width:100%;max-height:92vh;overflow-y:auto;box-shadow:0 30px 80px rgba(0,0,0,.7),0 0 80px rgba(46,213,143,.15);animation:modalIn .3s ease;}
+@keyframes modalIn{from{opacity:0;transform:translateY(20px) scale(.96);}to{opacity:1;transform:translateY(0) scale(1);}}
+.lead-modal-close{position:absolute;top:14px;right:18px;background:none;border:none;color:#9ca3af;font-size:32px;cursor:pointer;line-height:1;padding:4px 10px;border-radius:8px;transition:all .2s;}
+.lead-modal-close:hover{background:rgba(255,255,255,.06);color:#fff;}
+.lead-modal-header{margin-bottom:1.5rem;}
+.lead-modal-eyebrow{display:inline-block;color:#2ed58f;font-size:.7rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;background:rgba(46,213,143,.1);padding:6px 14px;border-radius:20px;border:1px solid rgba(46,213,143,.3);margin-bottom:1rem;}
+.lead-modal-header h3{color:#fff;font-size:1.6rem;line-height:1.2;margin:0 0 .5rem;font-weight:800;letter-spacing:-.02em;}
+.lead-modal-header p{color:#9ca3af;font-size:.92rem;margin:0;line-height:1.5;}
+.lead-form{display:flex;flex-direction:column;gap:1rem;}
+.lead-field{display:flex;flex-direction:column;gap:.4rem;}
+.lead-field label{color:#cbd5e1;font-size:.78rem;font-weight:600;letter-spacing:.02em;}
+.lead-field input,.lead-field select{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);color:#fff;padding:13px 16px;border-radius:12px;font-family:inherit;font-size:.95rem;outline:none;transition:all .2s;}
+.lead-field input:focus,.lead-field select:focus{border-color:#2ed58f;background:rgba(46,213,143,.05);}
+.lead-field input::placeholder{color:#4b5563;}
+.lead-field select{cursor:pointer;}
+.lead-field select option{background:#0f1419;color:#fff;}
+.lead-submit-btn{margin-top:.5rem;background:linear-gradient(135deg,#2ed58f,#1e90ff);color:#06070b;border:none;padding:16px;border-radius:14px;font-weight:800;font-size:1rem;cursor:pointer;font-family:inherit;letter-spacing:.01em;box-shadow:0 10px 30px rgba(46,213,143,.35);transition:all .2s;position:relative;}
+.lead-submit-btn:hover{transform:translateY(-2px);box-shadow:0 14px 40px rgba(46,213,143,.5);}
+.lead-submit-btn:disabled{opacity:.7;cursor:wait;transform:none;}
+.lead-submit-btn .btn-loader{display:none;}
+.lead-submit-btn.loading .btn-text{display:none;}
+.lead-submit-btn.loading .btn-loader{display:inline;}
+.lead-privacy{text-align:center;font-size:.72rem;color:#6b7280;margin:.5rem 0 0;}
+
+/* ===== Admin Panel ===== */
+.admin-panel{display:none;position:fixed;inset:0;z-index:99998;background:#06070b;overflow-y:auto;padding:2rem 1rem;}
+.admin-panel.open{display:block;}
+.admin-card{max-width:1100px;margin:0 auto;background:#0f1419;border:1px solid rgba(46,213,143,.2);border-radius:20px;padding:2.5rem;}
+.admin-card h2{color:#fff;margin:0 0 2rem;font-size:1.8rem;}
+.admin-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;}
+.admin-stat{background:linear-gradient(135deg,rgba(46,213,143,.08),rgba(30,144,255,.04));border:1px solid rgba(46,213,143,.2);border-radius:14px;padding:1.4rem;}
+.admin-stat .num{color:#2ed58f;font-size:2.4rem;font-weight:900;line-height:1;display:block;}
+.admin-stat .lbl{color:#9ca3af;font-size:.78rem;text-transform:uppercase;letter-spacing:.05em;margin-top:.4rem;display:block;}
+.admin-leads{display:flex;flex-direction:column;gap:.6rem;}
+.admin-lead{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:.9rem 1.2rem;display:grid;grid-template-columns:1.2fr 1fr 1.4fr 1fr 1fr 1fr;gap:1rem;font-size:.85rem;color:#cbd5e1;}
+.admin-lead strong{color:#fff;}
+@media(max-width:768px){.admin-lead{grid-template-columns:1fr;gap:.3rem;padding:1rem;}}
+</style>
+
+<script>
+// ============================================================
+// MateAI · Lead capture, visit tracking & admin panel
+// ============================================================
+(function(){
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz-TrNerAuvBN2RsH9xbQBKvXAI4hbDDC59_7UBCLeSpW7g7dYSFvFu0oOsWsb--p9S-w/exec';
+  const ADMIN_KEY = 'mateai-2026-secret'; // debe coincidir con CONFIG.ADMIN_KEY del Apps Script
+  const ASESOR_WA = '593968429494';
+
+  // ----- 1. TRACK VISIT -----
+  // Usamos GET con img/script para evitar CORS preflight
+  function trackVisit(){
+    const sid = localStorage.getItem('mateai_visit_session');
+    const now = Date.now();
+    // Una visita por sesión cada 30 min para no inflar
+    if(sid && now - parseInt(sid) < 30*60*1000) return;
+    localStorage.setItem('mateai_visit_session', String(now));
+    const url = APPS_SCRIPT_URL + '?action=visit'
+      + '&page=' + encodeURIComponent(location.pathname)
+      + '&ref=' + encodeURIComponent(document.referrer || 'direct')
+      + '&ua=' + encodeURIComponent(navigator.userAgent.slice(0,80));
+    // Use fetch no-cors fire-and-forget
+    fetch(url, {method:'GET', mode:'no-cors'}).catch(()=>{});
+  }
+  trackVisit();
+
+  // ----- 2. LEAD MODAL -----
+  const modal = document.getElementById('leadModal');
+  const form = document.getElementById('leadForm');
+  let pendingWhatsAppUrl = null;
+
+  function openModal(waUrl){
+    pendingWhatsAppUrl = waUrl;
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    setTimeout(()=>{form.querySelector('input[name="nombre"]').focus();}, 200);
+  }
+  function closeModal(){
+    modal.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  modal.querySelectorAll('[data-close-modal]').forEach(el=>el.addEventListener('click', closeModal));
+  document.addEventListener('keydown', e=>{if(e.key==='Escape') closeModal();});
+
+  // Recordar si ya llenó el formulario en esta sesión (24h)
+  function alreadyFilled(){
+    const t = localStorage.getItem('mateai_lead_filled');
+    return t && (Date.now() - parseInt(t)) < 24*60*60*1000;
+  }
+  function markFilled(){
+    localStorage.setItem('mateai_lead_filled', String(Date.now()));
+  }
+
+  // ----- 3. INTERCEPT WHATSAPP BUTTONS -----
+  function interceptWhatsAppLinks(){
+    document.querySelectorAll('a[href*="wa.me"], a[href*="api.whatsapp.com"]').forEach(link=>{
+      if(link.dataset.intercepted) return;
+      link.dataset.intercepted = '1';
+      link.addEventListener('click', function(e){
+        if(alreadyFilled()) return; // ya llenó, deja pasar
+        e.preventDefault();
+        openModal(this.href);
+      });
+    });
+  }
+  interceptWhatsAppLinks();
+  // Re-intercept periodically in case botones se agregan dinámicamente
+  setTimeout(interceptWhatsAppLinks, 1000);
+  setTimeout(interceptWhatsAppLinks, 3000);
+
+  // ----- 4. SUBMIT FORM -----
+  form.addEventListener('submit', async function(e){
+    e.preventDefault();
+    const btn = form.querySelector('.lead-submit-btn');
+    btn.classList.add('loading');
+    btn.disabled = true;
+
+    const data = {
+      action: 'lead',
+      nombre: form.nombre.value.trim(),
+      whatsapp: form.whatsapp.value.trim(),
+      email: form.email.value.trim(),
+      negocio: form.negocio.value,
+      servicio: form.servicio.value,
+      origen: pendingWhatsAppUrl || 'modal',
+    };
+
+    try {
+      // Usamos no-cors → no podemos leer respuesta, pero el POST llega
+      await fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {'Content-Type': 'text/plain;charset=utf-8'},
+        body: JSON.stringify(data),
+      });
+      markFilled();
+      closeModal();
+      // Abrir WhatsApp con el contexto del lead
+      const wa = pendingWhatsAppUrl || ('https://wa.me/'+ASESOR_WA);
+      const sep = wa.includes('?') ? '&' : '?';
+      const personalizedWa = wa + (wa.includes('text=') ? '' : sep+'text=' + encodeURIComponent('Hola, soy '+data.nombre+', acabo de llenar el formulario de MateAI. Me interesa: '+data.servicio));
+      window.open(personalizedWa, '_blank');
+    } catch(err){
+      alert('Hubo un error. Por favor, intenta de nuevo o escríbenos directamente.');
+    } finally {
+      btn.classList.remove('loading');
+      btn.disabled = false;
+      form.reset();
+    }
+  });
+
+  // ----- 5. ADMIN PANEL -----
+  const params = new URLSearchParams(location.search);
+  if(params.get('admin') === '1' || location.pathname.endsWith('/admin')){
+    const key = params.get('key') || prompt('Clave de admin:');
+    if(key === ADMIN_KEY){
+      document.getElementById('adminPanel').classList.add('open');
+      document.body.style.overflow = 'hidden';
+      loadAdminStats(key);
+    } else if(key){
+      alert('Clave incorrecta');
+    }
+  }
+
+  async function loadAdminStats(key){
+    const statsEl = document.getElementById('adminStats');
+    const leadsEl = document.getElementById('adminLeads');
+    try {
+      // GET en JSONP-style: usamos un callback via fetch directo
+      const res = await fetch(APPS_SCRIPT_URL + '?action=stats&key=' + encodeURIComponent(key));
+      const data = await res.json();
+      if(!data.ok){ statsEl.textContent = 'Error: '+(data.error||'desconocido'); return; }
+      const s = data.stats;
+      statsEl.innerHTML = `
+        <div class="admin-stat"><span class="num">${s.visitasTotal}</span><span class="lbl">Visitas total</span></div>
+        <div class="admin-stat"><span class="num">${s.visitasHoy}</span><span class="lbl">Visitas hoy</span></div>
+        <div class="admin-stat"><span class="num">${s.visitas7dias}</span><span class="lbl">Visitas 7 días</span></div>
+        <div class="admin-stat"><span class="num">${s.leadsTotal}</span><span class="lbl">Leads total</span></div>
+        <div class="admin-stat"><span class="num">${s.leadsHoy}</span><span class="lbl">Leads hoy</span></div>
+        <div class="admin-stat"><span class="num">${s.leads7dias}</span><span class="lbl">Leads 7 días</span></div>
+        <div class="admin-stat"><span class="num">${s.conversaciones}</span><span class="lbl">Mensajes chatbot</span></div>
+      `;
+      leadsEl.innerHTML = (s.ultimosLeads||[]).map(l=>`
+        <div class="admin-lead">
+          <span><strong>${l.nombre||'-'}</strong></span>
+          <span>📱 ${l.whatsapp||'-'}</span>
+          <span>📧 ${l.email||'-'}</span>
+          <span>${l.negocio||'-'}</span>
+          <span>${l.servicio||'-'}</span>
+          <span>${new Date(l.fecha).toLocaleString('es-EC')}</span>
+        </div>
+      `).join('') || '<p style="color:#6b7280">Sin leads aún</p>';
+    } catch(err){
+      statsEl.textContent = 'Error cargando: '+err.message;
+    }
+  }
+})();
+</script>
 
 </body>
 </html>
