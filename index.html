@@ -1962,7 +1962,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
 
 // 72-hour countdown (persists in localStorage)
 (function(){
-  const KEY = 'mateai_promo_deadline';
+  const KEY = 'mateai_promo_deadline_v2';
   let deadline = parseInt(localStorage.getItem(KEY) || '0', 10);
   const now = Date.now();
   if (!deadline || deadline < now) {
