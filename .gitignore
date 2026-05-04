@@ -1,0 +1,13 @@
+.DS_Store
+.claude/
+node_modules/
+hf-project/node_modules/
+hf-project/.hyperframes-cache/
+*.log
+.env
+.env.local
+index.backup.html
+__pycache__/
+*.pyc
+.vscode/
+.idea/

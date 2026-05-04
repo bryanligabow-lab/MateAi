@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+</head>
+<body style="margin:0;background:#050A0A">
+
+<div data-composition-id="root" data-start="0" data-duration="18" data-width="720" data-height="1280">
+
+  <div id="bg" class="clip" data-start="0" data-duration="18" data-track-index="0">
+    <div class="aurora a1"></div>
+    <div class="aurora a2"></div>
+    <div class="grid"></div>
+  </div>
+
+  <div id="scene1" class="clip scene" data-start="0" data-duration="3.5" data-track-index="1">
+    <div class="s-content">
+      <div class="intro-tag">MATEAI · AUTOMATIZACIÓN CON IA</div>
+      <div class="intro-logo-wrap">
+        <img src="mateai-logo.png" class="intro-logo" alt="MateAI"/>
+        <div class="intro-glow"></div>
+      </div>
+      <h1 class="intro-title">Para <span class="grad">Restaurantes</span></h1>
+      <p class="intro-sub">Pedidos y reservas automáticos 24/7</p>
+    </div>
+  </div>
+
+  <div id="scene2" class="clip scene" data-start="3.5" data-duration="10.5" data-track-index="1">
+    <div class="s-content chat-scene">
+      <div class="chat-label">WHATSAPP · TU RESTAURANTE</div>
+      <div class="phone">
+        <div class="phone-head">
+          <div class="phone-avatar">
+            <img src="mateai-logo.png" alt=""/>
+          </div>
+          <div>
+            <div class="phone-name">Pizza Napoli</div>
+            <div class="phone-status">● en línea · bot activo</div>
+          </div>
+        </div>
+        <div class="phone-body">
+          <div class="msg msg-them" id="m1">Hola, ¿tienen disponibilidad para hoy?</div>
+          <div class="msg msg-me" id="m2">¡Claro! Tenemos mesas libres desde las 7pm 🍕 ¿Para cuántas personas?</div>
+          <div class="msg msg-them" id="m3">Para 4 personas, a las 8pm</div>
+          <div class="msg msg-me" id="m4">Perfecto ✅ Reserva confirmada para 4 personas hoy 8:00 PM</div>
+          <div class="msg msg-them" id="m5">Genial, ¡gracias!</div>
+        </div>
+      </div>
+      <div class="chat-badge" id="badge-time">⚡ Respuesta en 2 segundos</div>
+    </div>
+  </div>
+
+  <div id="scene3" class="clip scene" data-start="14" data-duration="4" data-track-index="1">
+    <div class="s-content cta-scene">
+      <div class="cta-check">✓</div>
+      <h2 class="cta-title">Tu restaurante, <span class="grad">vendiendo 24/7</span></h2>
+      <div class="cta-features">
+        <div class="cta-feat">📱 Reservas automáticas</div>
+        <div class="cta-feat">🛒 Pedidos sin errores</div>
+        <div class="cta-feat">💬 Atención 24/7</div>
+      </div>
+      <div class="cta-button">
+        <img src="mateai-logo.png" class="cta-logo" alt=""/>
+        <span>mateai.app</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<style>
+[data-composition-id="root"]{
+  font-family:'Inter',system-ui,sans-serif;
+  background:#050A0A;
+  color:#F0FDF9;
+  width:100%;height:100%;
+  position:relative;
+  overflow:hidden;
+}
+[data-composition-id="root"] *{box-sizing:border-box}
+
+#bg{position:absolute;inset:0;overflow:hidden;z-index:0}
+.aurora{position:absolute;border-radius:50%;filter:blur(90px);will-change:transform}
+.a1{
+  width:500px;height:500px;
+  background:radial-gradient(circle,#00D4AA 0%,transparent 70%);
+  top:-150px;left:-100px;opacity:.55;
+}
+.a2{
+  width:400px;height:400px;
+  background:radial-gradient(circle,#06B6D4 0%,transparent 70%);
+  bottom:-100px;right:-80px;opacity:.45;
+}
+.grid{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);
+  background-size:40px 40px;
+  mask-image:radial-gradient(ellipse at center,black 30%,transparent 75%);
+  -webkit-mask-image:radial-gradient(ellipse at center,black 30%,transparent 75%);
+}
+
+.scene{position:absolute;inset:0;z-index:1}
+.s-content{
+  width:100%;height:100%;
+  padding:80px 50px;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  gap:36px;
+  position:relative;
+}
+
+.intro-tag{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:22px;font-weight:600;
+  letter-spacing:.22em;
+  color:#22E4C0;
+  text-transform:uppercase;
+}
+.intro-logo-wrap{position:relative;width:180px;height:180px}
+.intro-logo{
+  width:180px;height:180px;object-fit:contain;
+  position:relative;z-index:2;
+}
+.intro-glow{
+  position:absolute;inset:0;border-radius:50%;
+  background:radial-gradient(circle,#00D4AA 0%,transparent 65%);
+  filter:blur(50px);opacity:.7;z-index:1;
+}
+.intro-title{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:82px;font-weight:700;
+  text-align:center;
+  letter-spacing:-.03em;
+  line-height:1.05;margin:0;
+}
+.grad{
+  background:linear-gradient(135deg,#22E4C0 0%,#22D3EE 50%,#00FF9C 100%);
+  -webkit-background-clip:text;background-clip:text;
+  color:transparent;
+}
+.intro-sub{
+  font-size:30px;color:#A1A1AA;
+  text-align:center;margin:0;max-width:560px;
+}
+
+.chat-scene{padding:70px 40px;justify-content:flex-start;gap:28px}
+.chat-label{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:16px;font-weight:600;
+  letter-spacing:.2em;color:#22E4C0;
+  text-transform:uppercase;
+  padding:10px 20px;
+  background:rgba(0,212,170,.1);
+  border:1px solid rgba(0,212,170,.25);
+  border-radius:100px;
+}
+.phone{
+  width:100%;max-width:560px;
+  background:#0B1414;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:32px;
+  padding:24px;
+  box-shadow:0 30px 60px rgba(0,0,0,.6),0 0 0 1px rgba(0,212,170,.08);
+}
+.phone-head{
+  display:flex;align-items:center;gap:16px;
+  padding-bottom:18px;
+  border-bottom:1px solid rgba(255,255,255,.08);
+  margin-bottom:18px;
+}
+.phone-avatar{
+  width:60px;height:60px;border-radius:50%;
+  background:linear-gradient(135deg,#00D4AA,#06B6D4);
+  display:grid;place-items:center;
+  padding:8px;
+  box-shadow:0 0 20px rgba(0,212,170,.4);
+}
+.phone-avatar img{width:100%;height:100%;object-fit:contain}
+.phone-name{font-size:24px;font-weight:700;color:#F0FDF9}
+.phone-status{font-size:16px;color:#22E4C0;margin-top:4px}
+.phone-body{display:flex;flex-direction:column;gap:12px}
+.msg{
+  padding:14px 18px;border-radius:20px;
+  font-size:20px;line-height:1.4;
+  max-width:85%;font-weight:500;
+}
+.msg-them{
+  background:#1a2830;color:#F0FDF9;
+  align-self:flex-start;
+  border-bottom-left-radius:6px;
+}
+.msg-me{
+  background:linear-gradient(135deg,#00D4AA,#06B6D4);
+  color:#050A0A;
+  align-self:flex-end;
+  border-bottom-right-radius:6px;
+  font-weight:600;
+}
+.chat-badge{
+  font-size:22px;color:#F0FDF9;font-weight:600;
+  padding:14px 24px;
+  background:rgba(0,212,170,.12);
+  border:1px solid rgba(0,212,170,.3);
+  border-radius:100px;
+  backdrop-filter:blur(10px);
+}
+
+.cta-scene{gap:28px}
+.cta-check{
+  width:110px;height:110px;border-radius:50%;
+  background:linear-gradient(135deg,#00D4AA,#00FF9C);
+  display:grid;place-items:center;
+  font-size:64px;color:#050A0A;font-weight:700;
+  box-shadow:0 20px 60px rgba(0,212,170,.5);
+}
+.cta-title{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:64px;font-weight:700;
+  text-align:center;letter-spacing:-.03em;
+  line-height:1.08;margin:0;max-width:600px;
+}
+.cta-features{display:flex;flex-direction:column;gap:12px;align-items:center}
+.cta-feat{
+  font-size:26px;color:#F0FDF9;font-weight:500;
+  padding:12px 26px;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:100px;
+}
+.cta-button{
+  display:flex;align-items:center;gap:14px;
+  padding:20px 36px;
+  background:linear-gradient(135deg,#00D4AA,#06B6D4);
+  color:#050A0A;
+  border-radius:100px;
+  font-family:'Space Grotesk',sans-serif;
+  font-size:30px;font-weight:700;
+  box-shadow:0 16px 40px rgba(0,212,170,.45);
+  margin-top:8px;
+}
+.cta-logo{width:42px;height:42px;object-fit:contain}
+</style>
+
+<script>
+window.__timelines = window.__timelines || {};
+const tl = gsap.timeline({ paused: true });
+
+tl.to('.a1', { x:80, y:60, duration:18, ease:'sine.inOut' }, 0);
+tl.to('.a2', { x:-70, y:-50, duration:18, ease:'sine.inOut' }, 0);
+
+tl.from('#scene1 .intro-tag', { y:30, opacity:0, duration:0.6, ease:'power3.out' }, 0.2);
+tl.from('#scene1 .intro-logo', { scale:0.5, opacity:0, duration:0.8, ease:'back.out(1.4)' }, 0.4);
+tl.from('#scene1 .intro-glow', { opacity:0, scale:0.5, duration:0.8, ease:'power2.out' }, 0.4);
+tl.from('#scene1 .intro-title', { y:40, opacity:0, duration:0.7, ease:'expo.out' }, 0.9);
+tl.from('#scene1 .intro-sub', { y:20, opacity:0, duration:0.5, ease:'power2.out' }, 1.2);
+
+tl.from('#scene2', { opacity:0, duration:0.5, ease:'power2.out' }, 3.5);
+tl.from('#scene2 .chat-label', { y:-20, opacity:0, duration:0.5, ease:'power3.out' }, 3.7);
+tl.from('#scene2 .phone', { y:60, opacity:0, scale:0.95, duration:0.7, ease:'expo.out' }, 3.9);
+
+tl.from('#m1', { y:20, opacity:0, scale:0.9, duration:0.4, ease:'back.out(1.4)' }, 4.8);
+tl.from('#m2', { y:20, opacity:0, scale:0.9, duration:0.4, ease:'back.out(1.4)' }, 5.8);
+tl.from('#m3', { y:20, opacity:0, scale:0.9, duration:0.4, ease:'back.out(1.4)' }, 7.3);
+tl.from('#m4', { y:20, opacity:0, scale:0.9, duration:0.4, ease:'back.out(1.4)' }, 8.5);
+tl.from('#m5', { y:20, opacity:0, scale:0.9, duration:0.4, ease:'back.out(1.4)' }, 10.5);
+
+tl.from('#badge-time', { y:30, opacity:0, duration:0.5, ease:'power3.out' }, 11.5);
+
+tl.from('#scene3', { opacity:0, duration:0.5, ease:'power2.out' }, 14);
+tl.from('#scene3 .cta-check', { scale:0, rotation:-180, duration:0.7, ease:'back.out(1.6)' }, 14.2);
+tl.from('#scene3 .cta-title', { y:40, opacity:0, duration:0.6, ease:'expo.out' }, 14.6);
+tl.from('#scene3 .cta-feat', { y:20, opacity:0, duration:0.4, ease:'power2.out', stagger:0.12 }, 15.1);
+tl.from('#scene3 .cta-button', { y:30, scale:0.9, opacity:0, duration:0.5, ease:'back.out(1.4)' }, 15.9);
+
+tl.to('#scene3 .cta-button', { scale:1.04, duration:0.6, ease:'sine.inOut', yoyo:true, repeat:2 }, 16.6);
+
+window.__timelines['root'] = tl;
+</script>
+
+</body>
+</html>

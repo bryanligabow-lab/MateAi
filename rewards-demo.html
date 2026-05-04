@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="theme-color" content="#1A0F0A"/>
+<title>MateAI · Demo Rewards Restaurante</title>
+<link rel="icon" type="image/png" href="mateai-logo.png"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;900&family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#0E0604;
+  --bg-2:#160A06;
+  --bg-3:#1F0E08;
+  --surface:rgba(255,239,213,.05);
+  --surface-2:rgba(255,239,213,.08);
+  --surface-hover:rgba(255,239,213,.11);
+  --border:rgba(255,200,140,.10);
+  --border-strong:rgba(255,167,81,.30);
+  --text:#FFF6E8;
+  --text-2:#D9C5A8;
+  --text-3:#9A8770;
+  --text-4:#6E5D49;
+
+  --amber:#FFA751;
+  --amber-2:#FFC179;
+  --gold:#F5C842;
+  --gold-2:#FFD66B;
+  --red:#E63946;
+  --red-2:#FF5D5D;
+  --burgundy:#8B1E2C;
+  --cream:#FFEFD0;
+  --olive:#A4B96A;
+
+  --teal:#00D4AA;
+  --teal-2:#22E4C0;
+
+  --g-warm:linear-gradient(135deg,#FFA751 0%,#E63946 100%);
+  --g-gold:linear-gradient(135deg,#F5C842 0%,#FFA751 100%);
+  --g-rich:linear-gradient(135deg,#8B1E2C 0%,#3E0F12 100%);
+  --g-flame:linear-gradient(135deg,#FFD66B 0%,#FFA751 40%,#E63946 100%);
+  --g-mate:linear-gradient(135deg,#00D4AA 0%,#22E4C0 100%);
+
+  --font-d:'Playfair Display', Georgia, serif;
+  --font-h:'Space Grotesk',system-ui,sans-serif;
+  --font-b:'Inter',system-ui,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family:var(--font-b);
+  background:
+    radial-gradient(1200px 800px at 20% -10%, rgba(255,167,81,.15), transparent 55%),
+    radial-gradient(900px 700px at 90% 10%, rgba(230,57,70,.10), transparent 60%),
+    radial-gradient(800px 700px at 50% 110%, rgba(0,212,170,.08), transparent 60%),
+    var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px 12px;
+  overflow-x:hidden;
+}
+
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba(255,200,140,.03) 1px, transparent 0);
+  background-size:24px 24px;z-index:0;
+}
+
+.phone-wrap{
+  position:relative;display:flex;flex-direction:column;align-items:center;gap:14px;z-index:1;
+}
+.brand-tag{
+  display:flex;align-items:center;gap:10px;
+  padding:9px 16px;border-radius:999px;
+  background:rgba(20,10,5,.7);
+  border:1px solid var(--border);
+  backdrop-filter:blur(10px);
+  font-family:var(--font-h);font-size:11.5px;letter-spacing:.10em;
+  color:var(--text-2);text-transform:uppercase;
+}
+.brand-tag img{width:18px;height:18px;border-radius:5px;object-fit:cover}
+.brand-tag b{color:var(--teal);font-weight:600}
+
+.phone{
+  width:380px;max-width:100%;height:790px;
+  border-radius:48px;
+  background:linear-gradient(180deg,#0a0604 0%,#1a0f0a 100%);
+  padding:14px;
+  border:1px solid rgba(255,200,140,.08);
+  box-shadow:
+    0 0 0 2px rgba(255,167,81,.06),
+    0 30px 80px -20px rgba(255,90,40,.20),
+    0 60px 140px -40px rgba(0,0,0,.85),
+    inset 0 0 0 1px rgba(255,255,255,.04);
+  position:relative;
+}
+.phone::before{
+  content:"";position:absolute;top:18px;left:50%;transform:translateX(-50%);
+  width:110px;height:28px;background:#000;border-radius:16px;z-index:5;
+}
+.screen{
+  width:100%;height:100%;
+  border-radius:36px;
+  background:
+    radial-gradient(120% 100% at 50% 0%, rgba(255,167,81,.10), transparent 50%),
+    linear-gradient(180deg,#1A0E08 0%,#0E0604 100%);
+  overflow:hidden;
+  position:relative;
+  display:flex;flex-direction:column;
+}
+.status-bar{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:14px 28px 6px;
+  font-size:12px;font-weight:600;color:var(--text);
+  font-family:var(--font-h);
+  z-index:6;position:relative;
+}
+.status-bar .icons{display:flex;gap:6px;color:var(--text-2)}
+.scroll{
+  flex:1;overflow-y:auto;
+  padding:8px 18px 110px;
+  scrollbar-width:none;
+  position:relative;
+}
+.scroll::-webkit-scrollbar{display:none}
+
+.resto-head{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:6px 4px 14px;position:relative;
+}
+.resto-brand{display:flex;align-items:center;gap:11px}
+.resto-logo{
+  width:42px;height:42px;border-radius:13px;
+  background:var(--g-flame);
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;
+  box-shadow:0 8px 24px -4px rgba(230,57,70,.45),inset 0 0 0 1px rgba(255,255,255,.2);
+}
+.resto-name{
+  font-family:var(--font-d);font-weight:900;font-size:18px;
+  letter-spacing:-.005em;line-height:1;
+  background:linear-gradient(180deg,#FFEFD0 0%,#FFA751 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.resto-tag{
+  font-family:var(--font-h);font-size:9.5px;color:var(--text-3);
+  letter-spacing:.18em;text-transform:uppercase;margin-top:3px;
+  display:flex;align-items:center;gap:6px;
+}
+.resto-tag::before{content:"";width:14px;height:1px;background:var(--amber);}
+.bell{
+  width:38px;height:38px;border-radius:12px;
+  background:var(--surface);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--text-2);position:relative;cursor:pointer;
+  transition:.2s ease;
+}
+.bell:hover{background:var(--surface-hover);color:var(--amber)}
+.bell::after{
+  content:"";position:absolute;top:8px;right:8px;
+  width:7px;height:7px;border-radius:50%;background:var(--red-2);
+  box-shadow:0 0 0 2px #1A0E08, 0 0 10px rgba(230,57,70,.7);
+  animation:blink 2s ease-in-out infinite;
+}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.4}}
+
+.hero-card{
+  position:relative;
+  border-radius:26px;
+  padding:0;
+  background:
+    linear-gradient(180deg,rgba(20,8,4,.4) 0%,rgba(20,8,4,.85) 60%,rgba(20,8,4,.95) 100%),
+    radial-gradient(140% 100% at 50% 0%, rgba(255,167,81,.5), transparent 60%),
+    linear-gradient(135deg,#3E0F12 0%,#1A0E08 100%);
+  border:1px solid var(--border-strong);
+  overflow:hidden;
+  margin-bottom:18px;
+  box-shadow:0 20px 60px -20px rgba(230,57,70,.25);
+}
+.hero-card::before{
+  content:"";position:absolute;top:-30px;right:-30px;
+  width:140px;height:140px;border-radius:50%;
+  background:
+    radial-gradient(circle, rgba(255,167,81,.18) 0%, transparent 65%);
+  pointer-events:none;
+}
+.hero-card::after{
+  content:"";position:absolute;top:-50px;right:-50px;
+  width:160px;height:160px;border-radius:50%;
+  border:1px dashed rgba(255,167,81,.18);
+  animation:rotate 60s linear infinite;
+  pointer-events:none;
+}
+@keyframes rotate{to{transform:rotate(360deg)}}
+
+.hero-inner{padding:22px 22px 24px;position:relative;z-index:2}
+
+.greet{
+  font-family:var(--font-h);font-size:11.5px;
+  color:var(--amber-2);margin-bottom:3px;
+  letter-spacing:.12em;text-transform:uppercase;
+  display:flex;align-items:center;gap:7px;
+}
+.greet .wave{display:inline-block;animation:wave 2.4s ease-in-out infinite;font-size:14px}
+@keyframes wave{0%,100%{transform:rotate(0)}50%{transform:rotate(18deg)}}
+.username{
+  font-family:var(--font-d);font-size:22px;font-weight:700;
+  margin-bottom:18px;color:var(--cream);letter-spacing:-.01em;
+}
+
+.points-display{
+  display:flex;align-items:flex-end;gap:8px;margin-bottom:6px;
+}
+.points-num{
+  font-family:var(--font-d);font-size:54px;font-weight:900;
+  background:var(--g-flame);-webkit-background-clip:text;background-clip:text;color:transparent;
+  line-height:.95;letter-spacing:-.025em;
+  filter:drop-shadow(0 4px 14px rgba(255,167,81,.3));
+}
+.points-label{
+  font-family:var(--font-h);font-size:12px;color:var(--text-2);
+  padding-bottom:10px;letter-spacing:.06em;text-transform:uppercase;
+}
+.visit-counter{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:6px 12px;border-radius:999px;
+  background:rgba(255,167,81,.10);border:1px solid rgba(255,167,81,.25);
+  font-size:11.5px;color:var(--amber-2);font-weight:600;
+  margin-bottom:18px;
+}
+.visit-counter b{color:var(--cream);font-weight:700}
+
+.tier-row{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  margin-bottom:12px;
+}
+.tier{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:7px 14px;border-radius:999px;
+  background:rgba(245,200,66,.12);border:1px solid rgba(245,200,66,.30);
+  font-family:var(--font-h);font-size:12px;font-weight:700;color:var(--gold-2);
+  letter-spacing:.05em;
+}
+.tier-icon{font-size:14px}
+.next-info{
+  font-family:var(--font-h);font-size:10.5px;color:var(--text-3);
+  text-align:right;line-height:1.5;letter-spacing:.04em;
+}
+.next-info b{color:var(--amber-2);font-weight:700}
+
+.progress-track{
+  height:10px;border-radius:999px;
+  background:rgba(255,239,213,.06);
+  overflow:hidden;position:relative;
+  border:1px solid rgba(255,167,81,.08);
+}
+.progress-fill{
+  height:100%;width:62%;border-radius:999px;
+  background:var(--g-flame);
+  position:relative;
+  box-shadow:0 0 18px rgba(255,167,81,.6);
+}
+.progress-fill::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.5),transparent);
+  animation:shine 2.8s linear infinite;
+}
+@keyframes shine{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+
+.visit-dots{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-top:14px;padding:0 4px;
+}
+.dot{
+  width:14px;height:14px;border-radius:50%;
+  background:rgba(255,239,213,.08);
+  border:1px solid rgba(255,167,81,.15);
+  position:relative;
+  transition:.3s ease;
+}
+.dot.done{
+  background:var(--g-flame);
+  border-color:transparent;
+  box-shadow:0 0 12px rgba(255,167,81,.5);
+}
+.dot.done::after{
+  content:"✓";position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:9px;color:#3E0F12;font-weight:900;
+}
+.dot.next{
+  border-color:var(--amber);
+  animation:pulse 1.8s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(255,167,81,.5)}50%{box-shadow:0 0 0 6px rgba(255,167,81,0)}}
+.dot-line{flex:1;height:1px;background:rgba(255,167,81,.12);margin:0 -2px}
+.dot-line.filled{background:var(--g-flame)}
+
+.quick-actions{
+  display:grid;grid-template-columns:1.4fr 1fr;gap:10px;margin-bottom:20px;
+}
+.action-btn{
+  position:relative;
+  padding:16px 14px;border-radius:18px;
+  background:var(--surface);border:1px solid var(--border);
+  display:flex;flex-direction:column;gap:8px;
+  cursor:pointer;transition:.25s ease;
+  text-align:left;font-family:var(--font-h);
+  overflow:hidden;
+}
+.action-btn:hover{background:var(--surface-hover);border-color:var(--border-strong);transform:translateY(-2px)}
+.action-btn.primary{
+  background:var(--g-warm);border:none;
+  color:#1A0F0A;
+  box-shadow:0 12px 30px -8px rgba(230,57,70,.55),inset 0 0 0 1px rgba(255,255,255,.18);
+}
+.action-btn.primary::before{
+  content:"";position:absolute;top:-30px;right:-30px;
+  width:80px;height:80px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,255,255,.25),transparent 70%);
+}
+.action-btn.primary:hover{box-shadow:0 16px 36px -8px rgba(230,57,70,.7)}
+.action-btn .ico{
+  width:36px;height:36px;border-radius:11px;
+  background:rgba(255,167,81,.12);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--amber);
+}
+.action-btn.primary .ico{background:rgba(255,255,255,.22);color:#1A0F0A}
+.action-btn .lbl{font-size:14px;font-weight:700}
+.action-btn.primary .lbl{font-size:14px}
+.action-btn .desc{font-size:10.5px;color:var(--text-3);font-weight:500}
+.action-btn.primary .desc{color:rgba(26,15,10,.75)}
+.action-btn .badge{
+  position:absolute;top:10px;right:12px;
+  font-size:9px;padding:3px 7px;border-radius:6px;
+  background:rgba(255,255,255,.25);color:#1A0F0A;font-weight:700;
+  letter-spacing:.05em;
+}
+
+.section{margin-bottom:20px}
+.section-h{
+  display:flex;justify-content:space-between;align-items:baseline;
+  margin-bottom:11px;padding:0 2px;
+}
+.section-h h3{
+  font-family:var(--font-d);font-size:17px;font-weight:700;
+  letter-spacing:-.005em;color:var(--cream);
+}
+.section-h h3 .accent{color:var(--amber)}
+.section-h a{
+  font-family:var(--font-h);font-size:11px;color:var(--amber);
+  text-decoration:none;font-weight:600;letter-spacing:.04em;
+}
+
+.rewards-scroll{
+  display:flex;gap:11px;overflow-x:auto;padding:4px 2px 8px;
+  scrollbar-width:none;margin:0 -18px;padding-left:18px;padding-right:18px;
+}
+.rewards-scroll::-webkit-scrollbar{display:none}
+.reward-card{
+  min-width:180px;flex-shrink:0;
+  border-radius:18px;padding:14px;
+  background:linear-gradient(180deg,rgba(255,239,213,.06) 0%,rgba(255,239,213,.02) 100%);
+  border:1px solid var(--border);
+  display:flex;flex-direction:column;gap:8px;
+  transition:.3s ease;cursor:pointer;
+  position:relative;overflow:hidden;
+}
+.reward-card::before{
+  content:"";position:absolute;top:-20px;right:-20px;
+  width:80px;height:80px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,167,81,.15),transparent 70%);
+  transition:.3s ease;
+}
+.reward-card:hover{border-color:var(--border-strong);transform:translateY(-3px) scale(1.02)}
+.reward-card:hover::before{background:radial-gradient(circle,rgba(255,167,81,.3),transparent 70%)}
+.reward-card.locked{opacity:.55}
+.reward-emoji{
+  font-size:34px;width:54px;height:54px;border-radius:16px;
+  background:linear-gradient(135deg,rgba(255,167,81,.18),rgba(230,57,70,.10));
+  border:1px solid rgba(255,167,81,.18);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;z-index:1;
+  filter:drop-shadow(0 4px 8px rgba(0,0,0,.3));
+}
+.reward-card.locked .reward-emoji{filter:grayscale(.7);background:rgba(255,239,213,.05)}
+.reward-name{font-family:var(--font-d);font-size:14px;font-weight:700;line-height:1.25;color:var(--cream);position:relative;z-index:1}
+.reward-cost{
+  display:inline-flex;align-items:center;gap:5px;
+  font-family:var(--font-h);font-size:12px;font-weight:700;color:var(--amber);
+  margin-top:auto;position:relative;z-index:1;
+}
+.reward-cost.locked{color:var(--text-3)}
+.reward-cost svg{width:13px;height:13px}
+.reward-status{
+  font-family:var(--font-h);font-size:9px;text-transform:uppercase;letter-spacing:.10em;
+  color:var(--olive);font-weight:700;position:relative;z-index:1;
+}
+.reward-status.locked{color:var(--text-3)}
+.reward-status.hot{
+  color:#FFEFD0;background:var(--g-warm);
+  padding:3px 8px;border-radius:5px;display:inline-block;align-self:flex-start;
+  box-shadow:0 4px 12px -3px rgba(230,57,70,.5);
+}
+
+.tiers{
+  background:linear-gradient(180deg,rgba(255,239,213,.05) 0%,rgba(255,239,213,.02) 100%);
+  border:1px solid var(--border);
+  border-radius:20px;padding:16px;
+}
+.tier-line{
+  display:grid;grid-template-columns:32px 1fr auto;gap:12px;align-items:center;
+  padding:10px 0;border-bottom:1px dashed rgba(255,167,81,.10);
+}
+.tier-line:last-child{border-bottom:none}
+.tier-dot{
+  width:32px;height:32px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:700;
+  position:relative;
+}
+.tier-dot.bronze{background:linear-gradient(135deg,#CD7F32,#8B5A2B);color:#fff}
+.tier-dot.silver{background:linear-gradient(135deg,#E8EDF2,#9DA5AE);color:#3a3a3a}
+.tier-dot.gold{background:var(--g-gold);color:#3E0F12;box-shadow:0 0 18px rgba(245,200,66,.5)}
+.tier-dot.platinum{background:var(--g-flame);color:#3E0F12;box-shadow:0 0 18px rgba(255,167,81,.6)}
+.tier-info .nm{font-family:var(--font-d);font-size:14px;font-weight:700;color:var(--cream)}
+.tier-info .pt{font-family:var(--font-h);font-size:10.5px;color:var(--text-3);margin-top:1px}
+.tier-line.current .tier-info .nm{color:var(--amber)}
+.tier-badge{
+  font-family:var(--font-h);font-size:9.5px;padding:4px 9px;border-radius:6px;font-weight:700;
+  text-transform:uppercase;letter-spacing:.06em;
+}
+.tier-badge.now{background:var(--g-warm);color:#1A0F0A}
+.tier-badge.lock{background:rgba(255,239,213,.04);color:var(--text-3);border:1px solid rgba(255,239,213,.06)}
+.tier-badge.done{background:rgba(164,185,106,.12);color:var(--olive);border:1px solid rgba(164,185,106,.25)}
+
+.history{
+  background:linear-gradient(180deg,rgba(255,239,213,.05) 0%,rgba(255,239,213,.02) 100%);
+  border:1px solid var(--border);
+  border-radius:18px;padding:6px 14px;
+}
+.hist-item{
+  display:grid;grid-template-columns:38px 1fr auto;gap:11px;align-items:center;
+  padding:11px 0;border-bottom:1px dashed rgba(255,167,81,.08);
+}
+.hist-item:last-child{border-bottom:none}
+.hist-ico{
+  width:38px;height:38px;border-radius:11px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;
+}
+.hist-ico.in{background:rgba(164,185,106,.10);color:var(--olive)}
+.hist-ico.out{background:rgba(255,167,81,.12);color:var(--amber)}
+.hist-info .ttl{font-family:var(--font-h);font-size:13px;font-weight:600;color:var(--cream)}
+.hist-info .dt{font-family:var(--font-h);font-size:10.5px;color:var(--text-3);margin-top:1px}
+.hist-pts{
+  font-family:var(--font-d);font-size:14px;font-weight:700;
+}
+.hist-pts.in{color:var(--olive)}
+.hist-pts.out{color:var(--amber)}
+
+.powered{
+  margin-top:14px;display:flex;justify-content:center;align-items:center;gap:8px;
+  font-family:var(--font-h);font-size:9.5px;color:var(--text-4);
+  letter-spacing:.18em;text-transform:uppercase;padding:8px;
+}
+.powered img{width:14px;height:14px;border-radius:4px;opacity:.8}
+.powered b{color:var(--teal);font-weight:600}
+
+.nav{
+  position:absolute;bottom:14px;left:14px;right:14px;
+  background:rgba(20,10,5,.92);
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  border:1px solid var(--border);
+  border-radius:24px;
+  padding:11px 8px;
+  display:grid;grid-template-columns:repeat(4,1fr);gap:4px;
+  z-index:10;
+  box-shadow:0 -10px 30px -10px rgba(0,0,0,.5);
+}
+.nav-item{
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  padding:6px 4px;border-radius:14px;
+  color:var(--text-3);cursor:pointer;
+  transition:.2s ease;
+  font-family:var(--font-h);font-size:9.5px;font-weight:600;letter-spacing:.04em;
+}
+.nav-item:hover{color:var(--text-2)}
+.nav-item.active{color:var(--amber)}
+.nav-item.active svg{filter:drop-shadow(0 0 6px rgba(255,167,81,.5))}
+.nav-item svg{width:21px;height:21px}
+
+.modal{
+  position:absolute;inset:14px;
+  background:rgba(14,6,4,.88);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-radius:36px;
+  z-index:20;
+  display:none;
+  align-items:flex-end;justify-content:center;
+  padding-bottom:20px;
+}
+.modal.open{display:flex;animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.modal-card{
+  width:100%;
+  background:linear-gradient(180deg,#1F0E08 0%,#0E0604 100%);
+  border:1px solid var(--border-strong);
+  border-radius:24px;padding:22px 20px 20px;
+  animation:slideUp .4s cubic-bezier(.34,1.56,.64,1);
+  position:relative;overflow:hidden;
+}
+.modal-card::before{
+  content:"";position:absolute;top:-30px;left:-30px;
+  width:120px;height:120px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,167,81,.18),transparent 65%);
+  pointer-events:none;
+}
+@keyframes slideUp{from{transform:translateY(40px);opacity:0}to{transform:translateY(0);opacity:1}}
+.modal-h{
+  display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;position:relative;
+}
+.modal-h h4{font-family:var(--font-d);font-size:19px;font-weight:700;color:var(--cream)}
+.modal-close{
+  width:32px;height:32px;border-radius:50%;
+  background:var(--surface);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--text-2);cursor:pointer;
+}
+.modal-sub{font-size:12px;color:var(--text-2);margin-bottom:18px;position:relative;line-height:1.5}
+.modal-sub b{color:var(--amber);font-weight:700}
+
+.code-row{
+  display:flex;gap:8px;justify-content:center;margin-bottom:14px;position:relative;
+}
+.code-box{
+  width:44px;height:56px;border-radius:13px;
+  background:rgba(255,239,213,.05);border:1px solid var(--border);
+  text-align:center;font-family:var(--font-d);font-size:24px;font-weight:700;
+  color:var(--cream);
+  transition:.2s ease;
+}
+.code-box:focus{outline:none;border-color:var(--amber);background:rgba(255,167,81,.06);transform:translateY(-2px)}
+.code-box.filled{border-color:var(--amber);color:var(--amber);box-shadow:0 0 18px rgba(255,167,81,.25)}
+
+.modal-help{
+  font-family:var(--font-h);font-size:11px;color:var(--text-3);text-align:center;margin-bottom:16px;
+  letter-spacing:.04em;position:relative;
+}
+.modal-help b{color:var(--amber);font-weight:700}
+
+.btn-primary{
+  width:100%;padding:16px;border-radius:14px;
+  background:var(--g-warm);color:#1A0F0A;
+  font-family:var(--font-h);font-weight:700;font-size:14px;
+  letter-spacing:.04em;text-transform:uppercase;
+  border:none;cursor:pointer;
+  box-shadow:0 12px 30px -8px rgba(230,57,70,.5),inset 0 0 0 1px rgba(255,255,255,.18);
+  transition:.25s ease;position:relative;
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 16px 36px -8px rgba(230,57,70,.7)}
+.btn-primary:disabled{opacity:.5;cursor:not-allowed;transform:none}
+
+.visit-preview{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:12px 14px;border-radius:14px;
+  background:linear-gradient(135deg,rgba(255,167,81,.10),rgba(245,200,66,.06));
+  border:1px solid rgba(255,167,81,.20);
+  margin-bottom:14px;position:relative;
+}
+.visit-preview .lbl{
+  font-family:var(--font-h);font-size:11px;color:var(--text-2);
+  letter-spacing:.06em;text-transform:uppercase;
+}
+.visit-preview .val{
+  font-family:var(--font-d);font-size:22px;font-weight:900;
+  background:var(--g-flame);-webkit-background-clip:text;background-clip:text;color:transparent;
+}
+
+.toast{
+  position:absolute;top:60px;left:50%;transform:translate(-50%,-20px);
+  background:var(--g-flame);color:#1A0F0A;
+  padding:11px 22px;border-radius:999px;
+  font-family:var(--font-h);font-weight:700;font-size:13px;
+  letter-spacing:.04em;
+  box-shadow:0 14px 34px -8px rgba(230,57,70,.55);
+  z-index:30;opacity:0;pointer-events:none;
+  transition:.4s ease;white-space:nowrap;
+}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+.confetti{
+  position:absolute;top:50%;left:50%;width:8px;height:8px;
+  pointer-events:none;z-index:25;
+}
+
+@media (max-width:430px){
+  body{padding:10px 0}
+  .phone{width:100%;height:calc(100vh - 80px);min-height:680px;border-radius:32px}
+  .screen{border-radius:22px}
+  .brand-tag{font-size:10px;padding:7px 14px}
+}
+</style>
+</head>
+<body>
+
+<div class="phone-wrap">
+  <div class="brand-tag">
+    <img src="mateai-logo.png" alt="MateAI"/>
+    <span>Demo · <b>MateAI Rewards</b> · Restaurantes</span>
+  </div>
+
+  <div class="phone">
+    <div class="screen">
+
+      <div class="status-bar">
+        <span>9:41</span>
+        <span class="icons">
+          <svg width="16" height="11" viewBox="0 0 16 11" fill="currentColor"><rect x="0" y="6" width="3" height="5" rx="1"/><rect x="4" y="4" width="3" height="7" rx="1"/><rect x="8" y="2" width="3" height="9" rx="1"/><rect x="12" y="0" width="3" height="11" rx="1"/></svg>
+          <svg width="22" height="11" viewBox="0 0 22 11" fill="none" stroke="currentColor" stroke-width="1"><rect x=".5" y=".5" width="18" height="10" rx="2"/><rect x="2" y="2" width="13" height="7" rx="1" fill="currentColor"/><rect x="20" y="3" width="1.5" height="5" rx=".5" fill="currentColor"/></svg>
+        </span>
+      </div>
+
+      <div class="scroll" id="scroll">
+
+        <div class="resto-head">
+          <div class="resto-brand">
+            <div class="resto-logo">🔥</div>
+            <div>
+              <div class="resto-name">La Brasa Dorada</div>
+              <div class="resto-tag">Parrilla · Asados · Tradición</div>
+            </div>
+          </div>
+          <div class="bell" aria-label="Notificaciones">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+          </div>
+        </div>
+
+        <div class="hero-card">
+          <div class="hero-inner">
+            <div class="greet"><span class="wave">👋</span> Bienvenida de vuelta</div>
+            <div class="username">María González</div>
+
+            <div class="points-display">
+              <div class="points-num" id="pointsNum">350</div>
+              <div class="points-label">puntos</div>
+            </div>
+
+            <div class="visit-counter">
+              🍽️ <b id="visitCount">7</b> visitas · <b>+50 pts</b> cada vez
+            </div>
+
+            <div class="tier-row">
+              <span class="tier">
+                <span class="tier-icon">🥈</span>
+                Plata · Sabores
+              </span>
+              <div class="next-info">Te faltan <b id="toNext">3 visitas</b><br/>para Oro 🏆</div>
+            </div>
+
+            <div class="progress-track">
+              <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <div class="visit-dots" id="visitDots"></div>
+          </div>
+        </div>
+
+        <div class="quick-actions">
+          <button class="action-btn primary" onclick="openModal()">
+            <span class="badge">+50 PTS</span>
+            <div class="ico">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+            </div>
+            <div class="lbl">Registrar visita</div>
+            <div class="desc">Pídele el código al mesero</div>
+          </button>
+          <button class="action-btn" onclick="scrollToRewards()">
+            <div class="ico">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+            </div>
+            <div class="lbl">Mis premios</div>
+            <div class="desc">8 disponibles 🎁</div>
+          </button>
+        </div>
+
+        <div class="section" id="rewardsSection">
+          <div class="section-h">
+            <h3>Premios <span class="accent">de la casa</span></h3>
+            <a href="#">Ver todos →</a>
+          </div>
+          <div class="rewards-scroll">
+            <div class="reward-card" onclick="redeemReward(this, 'Limonada artesanal', 150)">
+              <div class="reward-emoji">🥤</div>
+              <div class="reward-name">Limonada artesanal</div>
+              <div class="reward-cost"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>150 pts</div>
+              <div class="reward-status hot">🔥 ¡CANJEABLE!</div>
+            </div>
+            <div class="reward-card" onclick="redeemReward(this, 'Postre del chef', 250)">
+              <div class="reward-emoji">🍰</div>
+              <div class="reward-name">Postre del chef</div>
+              <div class="reward-cost"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>250 pts</div>
+              <div class="reward-status">DISPONIBLE</div>
+            </div>
+            <div class="reward-card" onclick="redeemReward(this, 'Picada para 2', 300)">
+              <div class="reward-emoji">🍖</div>
+              <div class="reward-name">Picada para 2</div>
+              <div class="reward-cost"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>300 pts</div>
+              <div class="reward-status">DISPONIBLE</div>
+            </div>
+            <div class="reward-card locked">
+              <div class="reward-emoji">🍷</div>
+              <div class="reward-name">Cena para 2 con vino</div>
+              <div class="reward-cost locked"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>800 pts</div>
+              <div class="reward-status locked">FALTAN 450</div>
+            </div>
+            <div class="reward-card locked">
+              <div class="reward-emoji">👨‍🍳</div>
+              <div class="reward-name">Mesa del chef VIP</div>
+              <div class="reward-cost locked"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>1,500 pts</div>
+              <div class="reward-status locked">FALTAN 1,150</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-h">
+            <h3>Tu <span class="accent">progreso</span></h3>
+            <a href="#">Beneficios →</a>
+          </div>
+          <div class="tiers">
+            <div class="tier-line">
+              <div class="tier-dot bronze">🥉</div>
+              <div class="tier-info"><div class="nm">Bronce · Visitante</div><div class="pt">1 – 4 visitas</div></div>
+              <div class="tier-badge done">✓ Logrado</div>
+            </div>
+            <div class="tier-line current">
+              <div class="tier-dot silver">🥈</div>
+              <div class="tier-info"><div class="nm">Plata · Sabores</div><div class="pt">5 – 9 visitas · 5% off cumple</div></div>
+              <div class="tier-badge now">Actual</div>
+            </div>
+            <div class="tier-line">
+              <div class="tier-dot gold">🥇</div>
+              <div class="tier-info"><div class="nm">Oro · Gourmet</div><div class="pt">10 – 19 visitas · postre gratis</div></div>
+              <div class="tier-badge lock">+3 visitas</div>
+            </div>
+            <div class="tier-line">
+              <div class="tier-dot platinum">⭐</div>
+              <div class="tier-info"><div class="nm">Platino · Embajador</div><div class="pt">20+ visitas · mesa preferente</div></div>
+              <div class="tier-badge lock">+13 visitas</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-h">
+            <h3>Tus <span class="accent">visitas</span></h3>
+            <a href="#">Historial →</a>
+          </div>
+          <div class="history" id="history">
+            <div class="hist-item">
+              <div class="hist-ico in">🍽️</div>
+              <div class="hist-info"><div class="ttl">Visita registrada</div><div class="dt">Hoy · 14:32</div></div>
+              <div class="hist-pts in">+50</div>
+            </div>
+            <div class="hist-item">
+              <div class="hist-ico out">🥤</div>
+              <div class="hist-info"><div class="ttl">Canje · Limonada</div><div class="dt">Ayer · 19:15</div></div>
+              <div class="hist-pts out">−150</div>
+            </div>
+            <div class="hist-item">
+              <div class="hist-ico in">🍽️</div>
+              <div class="hist-info"><div class="ttl">Visita registrada</div><div class="dt">28 abr · 13:00</div></div>
+              <div class="hist-pts in">+50</div>
+            </div>
+            <div class="hist-item">
+              <div class="hist-ico in">🎂</div>
+              <div class="hist-info"><div class="ttl">Bonus cumpleaños</div><div class="dt">25 abr</div></div>
+              <div class="hist-pts in">+100</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="powered">
+          <img src="mateai-logo.png" alt="MateAI"/>
+          Powered by <b>MateAI</b>
+        </div>
+
+      </div>
+
+      <div class="nav">
+        <div class="nav-item active">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+          Inicio
+        </div>
+        <div class="nav-item" onclick="scrollToRewards()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/></svg>
+          Premios
+        </div>
+        <div class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h2M19 12h2M12 3v2M12 19v2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4 7 17M17 7l1.4-1.4"/><circle cx="12" cy="12" r="4"/></svg>
+          Menú
+        </div>
+        <div class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Perfil
+        </div>
+      </div>
+
+      <div class="modal" id="modal">
+        <div class="modal-card">
+          <div class="modal-h">
+            <h4>Registrar visita 🍽️</h4>
+            <div class="modal-close" onclick="closeModal()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </div>
+          </div>
+          <p class="modal-sub">Pídele al mesero el <b>código del día</b>. Cada visita suma puntos a tu cuenta.</p>
+
+          <div class="visit-preview">
+            <div>
+              <div class="lbl">Ganarás</div>
+            </div>
+            <div class="val">+50 pts</div>
+          </div>
+
+          <div class="code-row" id="codeRow">
+            <input type="text" class="code-box" maxlength="1" inputmode="numeric"/>
+            <input type="text" class="code-box" maxlength="1" inputmode="numeric"/>
+            <input type="text" class="code-box" maxlength="1" inputmode="numeric"/>
+            <input type="text" class="code-box" maxlength="1" inputmode="numeric"/>
+            <input type="text" class="code-box" maxlength="1" inputmode="numeric"/>
+            <input type="text" class="code-box" maxlength="1" inputmode="numeric"/>
+          </div>
+
+          <div class="modal-help">Código válido por <b>24 horas</b> · cambia cada día</div>
+
+          <button class="btn-primary" id="confirmBtn" onclick="confirmVisit()">Confirmar visita</button>
+        </div>
+      </div>
+
+      <div class="toast" id="toast">+50 puntos ✨</div>
+
+    </div>
+  </div>
+
+  <div style="font-size:11px;color:var(--text-3);margin-top:6px;text-align:center;max-width:380px;line-height:1.5">
+    Demo interactivo · Toca <b style="color:var(--amber)">Registrar visita</b> y usa cualquier código de 6 dígitos (ej. <b style="color:var(--amber)">123456</b>). Cada visita = <b style="color:var(--amber)">+50 puntos</b>.
+  </div>
+</div>
+
+<script>
+const state = {
+  points: 350,
+  visits: 7,
+  pointsPerVisit: 50,
+  tiers: [
+    {name:'Bronce',  min:1,  max:4,  emoji:'🥉'},
+    {name:'Plata',   min:5,  max:9,  emoji:'🥈'},
+    {name:'Oro',     min:10, max:19, emoji:'🥇'},
+    {name:'Platino', min:20, max:Infinity, emoji:'⭐'}
+  ]
+};
+
+const $ = sel => document.querySelector(sel);
+const fmt = n => n.toLocaleString('es-EC');
+
+function getTier(visits){ return state.tiers.find(t => visits >= t.min && visits <= t.max); }
+function getNextTier(visits){ return state.tiers.find(t => t.min > visits); }
+
+function renderVisitDots(){
+  const container = $('#visitDots');
+  const t = getTier(state.visits);
+  const nx = getNextTier(state.visits);
+  if(!nx){ container.innerHTML = '<div style="font-family:var(--font-h);font-size:11px;color:var(--amber);text-align:center;width:100%">⭐ Embajador máximo ⭐</div>'; return; }
+  const total = nx.min - t.min;
+  const done = state.visits - t.min;
+  let html = '';
+  for(let i=0;i<total;i++){
+    let cls = '';
+    if(i < done) cls = 'done';
+    else if(i === done) cls = 'next';
+    html += `<div class="dot ${cls}"></div>`;
+    if(i < total-1) html += `<div class="dot-line ${i < done-1 ? 'filled':''}"></div>`;
+  }
+  container.innerHTML = html;
+}
+
+function refreshUI(){
+  const t = getTier(state.visits);
+  const nx = getNextTier(state.visits);
+  $('#pointsNum').textContent = fmt(state.points);
+  $('#visitCount').textContent = state.visits;
+  if(nx){
+    const need = nx.min - state.visits;
+    $('#toNext').textContent = `${need} ${need === 1 ? 'visita' : 'visitas'}`;
+    const span = nx.min - t.min;
+    const into = state.visits - t.min;
+    const pct = Math.max(8, Math.min(100, (into/span)*100));
+    $('#progressFill').style.width = pct + '%';
+  } else {
+    $('#toNext').textContent = '¡Nivel máximo!';
+    $('#progressFill').style.width = '100%';
+  }
+  renderVisitDots();
+}
+
+function openModal(){
+  $('#modal').classList.add('open');
+  document.querySelectorAll('.code-box').forEach(b => { b.value=''; b.classList.remove('filled'); });
+  setTimeout(() => document.querySelector('.code-box').focus(), 200);
+}
+function closeModal(){ $('#modal').classList.remove('open'); }
+
+document.querySelectorAll('.code-box').forEach((box, idx, all) => {
+  box.addEventListener('input', e => {
+    const v = e.target.value.replace(/\D/g,'').slice(-1);
+    e.target.value = v;
+    if(v) e.target.classList.add('filled'); else e.target.classList.remove('filled');
+    if(v && idx < all.length-1) all[idx+1].focus();
+  });
+  box.addEventListener('keydown', e => {
+    if(e.key === 'Backspace' && !e.target.value && idx > 0) all[idx-1].focus();
+  });
+});
+
+function getCode(){ return [...document.querySelectorAll('.code-box')].map(b => b.value).join(''); }
+
+function confirmVisit(){
+  const code = getCode();
+  if(code.length !== 6){ shakeRow(); return; }
+
+  const oldTier = getTier(state.visits).name;
+  state.points += state.pointsPerVisit;
+  state.visits += 1;
+  const newTier = getTier(state.visits).name;
+
+  closeModal();
+  showToast(`+${state.pointsPerVisit} puntos ✨ · Visita #${state.visits}`);
+  refreshUI();
+  prependHistory(`Visita registrada`, 'Justo ahora', state.pointsPerVisit, 'in', '🍽️');
+
+  if(oldTier !== newTier){
+    setTimeout(() => showToast(`🎉 ¡Subiste a ${newTier}!`), 1600);
+    fireConfetti();
+  }
+}
+
+function shakeInput(el){
+  el.animate([{transform:'translateX(0)'},{transform:'translateX(-6px)'},{transform:'translateX(6px)'},{transform:'translateX(0)'}],{duration:300});
+  el.style.borderColor = '#FF5D5D';
+  setTimeout(() => el.style.borderColor = '', 600);
+}
+function shakeRow(){ document.querySelectorAll('.code-box').forEach(shakeInput); }
+
+function showToast(msg){
+  const t = $('#toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2400);
+}
+
+function prependHistory(title, date, pts, dir, emoji){
+  const html = `
+    <div class="hist-item" style="opacity:0;transform:translateY(-8px);transition:.4s">
+      <div class="hist-ico ${dir}">${emoji}</div>
+      <div class="hist-info"><div class="ttl">${title}</div><div class="dt">${date}</div></div>
+      <div class="hist-pts ${dir}">${dir==='in'?'+':'−'}${fmt(pts)}</div>
+    </div>`;
+  $('#history').insertAdjacentHTML('afterbegin', html);
+  requestAnimationFrame(() => {
+    const first = $('#history').firstElementChild;
+    first.style.opacity = 1;
+    first.style.transform = 'translateY(0)';
+  });
+}
+
+function redeemReward(card, name, cost){
+  if(card.classList.contains('locked')) return;
+  if(state.points < cost){ shakeInput(card); showToast(`Te faltan ${cost - state.points} pts`); return; }
+  state.points -= cost;
+  refreshUI();
+  showToast(`🎁 Canjeaste: ${name}`);
+  prependHistory(`Canje · ${name}`, 'Justo ahora', cost, 'out', '🎁');
+  card.style.transform = 'scale(.95)';
+  setTimeout(() => card.style.transform = '', 260);
+  fireConfetti();
+}
+
+function scrollToRewards(){
+  $('#rewardsSection').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function fireConfetti(){
+  const colors = ['#FFA751','#E63946','#F5C842','#FFD66B','#00D4AA','#A4B96A'];
+  const screen = document.querySelector('.screen');
+  for(let i=0;i<36;i++){
+    const c = document.createElement('div');
+    c.className = 'confetti';
+    c.style.background = colors[i % colors.length];
+    c.style.borderRadius = Math.random() > .5 ? '50%' : '2px';
+    c.style.width = (5 + Math.random()*7)+'px';
+    c.style.height = (5 + Math.random()*7)+'px';
+    screen.appendChild(c);
+    const x = (Math.random()-.5) * 320;
+    const y = -180 - Math.random()*200;
+    const r = (Math.random()-.5) * 720;
+    c.animate([
+      { transform:'translate(0,0) rotate(0)', opacity:1 },
+      { transform:`translate(${x}px, ${y}px) rotate(${r}deg)`, opacity:0 }
+    ], { duration: 1300 + Math.random()*700, easing:'cubic-bezier(.2,.8,.4,1)' });
+    setTimeout(() => c.remove(), 2100);
+  }
+}
+
+refreshUI();
+</script>
+
+</body>
+</html>
