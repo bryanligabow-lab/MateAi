@@ -1,0 +1,12 @@
+"use client";
+import { useState } from "react";
+import Link from "next/link";
+import { type Language, serviceCatalog } from "@/config/services";
+
+const copy={
+  es:{kicker:"Soluciones digitales con IA",title:"¿Qué quieres construir?",intro:"Primero elige tu idioma. Después selecciona el servicio que llevará tu negocio al siguiente nivel.",language:"Selecciona tu idioma",services:"Selecciona un servicio",featured:"Experiencia disponible",enter:"Ver servicio",custom:"¿No encuentras exactamente lo que necesitas?",talk:"Cuéntanos tu idea"},
+  en:{kicker:"AI-powered digital solutions",title:"What do you want to build?",intro:"Choose your language first. Then select the service that will move your business forward.",language:"Choose your language",services:"Choose a service",featured:"Full experience available",enter:"Explore service",custom:"Don’t see exactly what you need?",talk:"Tell us your idea"},
+} as const;
+
+export function ServiceGateway(){const [language,setLanguage]=useState<Language>("es");const t=copy[language];
+ return <section className="gateway"><div className="gateway-glow gateway-glow-one"/><div className="gateway-glow gateway-glow-two"/><div className="gateway-shell"><div className="gateway-copy"><span className="section-kicker">{t.kicker}</span><h1>{t.title}</h1><p>{t.intro}</p></div><div className="language-panel" aria-labelledby="language-title"><span id="language-title">{t.language}</span><div className="language-switch" role="group" aria-label={t.language}><button className={language==="es"?"active":""} onClick={()=>setLanguage("es")} aria-pressed={language==="es"}>Español</button><button className={language==="en"?"active":""} onClick={()=>setLanguage("en")} aria-pressed={language==="en"}>English</button></div></div><div className="service-heading"><span>{t.services}</span><i/></div><div className="service-cards">{serviceCatalog.map((service,index)=>{const content=service[language];return <Link className={`service-card ${"featured" in service&&service.featured?"featured":""}`} href={`/services/${service.slug}?lang=${language}`} key={service.slug}><div className="service-card-top"><b>{service.icon}</b><span>0{index+1}</span></div><h2>{content.name}</h2><p>{content.description}</p><div className="service-card-link"><span>{t.enter}</span><i>↗</i></div>{"featured" in service&&service.featured&&<em>{t.featured}</em>}</Link>})}</div><div className="gateway-custom"><span>{t.custom}</span><Link href={`/contact?lang=${language}`}>{t.talk} <b>↗</b></Link></div></div></section>}

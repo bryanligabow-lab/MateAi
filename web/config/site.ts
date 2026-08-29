@@ -15,9 +15,9 @@ export const siteConfig = {
 } as const;
 
 export const navigation = [
-  { label: "Solutions", href: "/#solutions" },
+  { label: "Services", href: "/" },
+  { label: "Chatbots", href: "/services/web-chatbots" },
   { label: "Industries", href: "/industries" },
-  { label: "How It Works", href: "/#how-it-works" },
   { label: "Pricing", href: "/pricing" },
   { label: "Demo", href: "/demo" },
   { label: "About", href: "/about" },
