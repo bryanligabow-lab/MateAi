@@ -1,0 +1,3 @@
+import type { Metadata } from "next";import Link from "next/link";import { industries } from "@/config/industries";
+export const metadata:Metadata={title:"Industries",description:"AI receptionist solutions for local service businesses."};
+export default function Industries(){return <><section className="subhero centered"><span className="section-kicker">Industry solutions</span><h1>Built around how local<br/>businesses actually work.</h1><p>Choose your industry to see the questions, qualification flow, and customer journey MateAI can support.</p></section><section className="section industry-list">{industries.map((i,index)=><Link href={`/${i.key}`} key={i.key}><span>0{index+1}</span><div><h2>{i.name}</h2><p>{i.description}</p></div><b>↗</b></Link>)}</section></>}

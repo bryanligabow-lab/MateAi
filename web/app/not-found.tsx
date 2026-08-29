@@ -1,0 +1,1 @@
+import { ButtonLink } from "@/components/ui/ButtonLink";export default function NotFound(){return <section className="error-page"><span>404</span><h1>This page missed the handoff.</h1><p>The link may have moved, but your next customer does not have to.</p><ButtonLink href="/">Back to MateAI</ButtonLink></section>}

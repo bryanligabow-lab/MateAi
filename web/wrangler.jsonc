@@ -1,0 +1,24 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "mateai-site",
+  "compatibility_date": "2026-08-29",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+  "main": "vinext/server/fetch-handler",
+  "assets": {
+    "directory": "dist/client",
+    "not_found_handling": "none",
+    "binding": "ASSETS"
+  },
+  "cache": {
+    "enabled": true
+  },
+  "observability": { "enabled": true }
+  ,"d1_databases": [{
+    "binding": "DB",
+    "database_name": "mateai-production",
+    "database_id": "ea02c6ae-ac45-4079-b0f7-1eecffce068c",
+    "migrations_dir": "migrations"
+  }]
+}

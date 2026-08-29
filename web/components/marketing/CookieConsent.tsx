@@ -1,0 +1,3 @@
+"use client";
+import { useEffect, useState } from "react";
+export function CookieConsent(){const [show,setShow]=useState(false);useEffect(()=>setShow(!localStorage.getItem("mateai-consent")),[]);if(!show)return null;const save=(value:string)=>{localStorage.setItem("mateai-consent",value);setShow(false)};return <aside className="cookie" aria-label="Cookie preferences"><div><strong>Your privacy, your choice.</strong><p>We use essential storage to run this site. Optional analytics only load with your permission.</p></div><div><button onClick={()=>save("essential")}>Essential only</button><button className="button button-primary" onClick={()=>save("essential,analytics")}>Allow analytics</button></div></aside>}

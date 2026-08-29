@@ -1,0 +1,1 @@
+import type { Metadata } from "next";import { IndustryPage } from "@/components/marketing/IndustryPage";import { getIndustry } from "@/config/industries";const industry=getIndustry("landscaping")!;export const metadata:Metadata={title:industry.headline,description:industry.description};export default function Page(){return <IndustryPage industry={industry}/>}

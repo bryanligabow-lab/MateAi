@@ -1,0 +1,1 @@
+"use client";export default function ErrorPage({reset}:{reset:()=>void}){return <section className="error-page"><span>500</span><h1>Something did not connect.</h1><p>No sensitive details were exposed. Try the request again.</p><button className="button button-primary" onClick={reset}>Try again</button></section>}
