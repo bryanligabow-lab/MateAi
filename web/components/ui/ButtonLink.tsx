@@ -1,6 +1,6 @@
 import Link from "next/link";
-import type { ReactNode } from "react";
+import type { MouseEventHandler, ReactNode } from "react";
 
-export function ButtonLink({ href, children, variant="primary", className="" }: { href:string; children:ReactNode; variant?:"primary"|"secondary"|"ghost"; className?:string }) {
-  return <Link className={`button button-${variant} ${className}`} href={href}>{children}</Link>;
+export function ButtonLink({ href, children, variant="primary", className="", onClick }: { href:string; children:ReactNode; variant?:"primary"|"secondary"|"ghost"; className?:string; onClick?:MouseEventHandler<HTMLAnchorElement> }) {
+  return <Link className={`button button-${variant} ${className}`} href={href} onClick={onClick}>{children}</Link>;
 }
