@@ -1939,9 +1939,84 @@ footer .ft-brand img{width:22px;height:22px;object-fit:contain}
   margin:0 auto 30px;
 }
 .cta-final .cta-row{justify-content:center}
+
+/* ============================================
+   APPLE-INSPIRED EXPERIENCE · 2026 refresh
+   ============================================ */
+:root{
+  --bg:#f5f5f7;--bg-2:#fff;--bg-3:#f5f5f7;
+  --surface:rgba(255,255,255,.72);--surface-2:rgba(255,255,255,.86);
+  --surface-hover:#fff;--border:rgba(0,0,0,.08);--border-strong:rgba(0,113,227,.3);
+  --text:#1d1d1f;--text-2:#6e6e73;--text-3:#86868b;--text-4:#a1a1a6;
+  --teal:#0071e3;--teal-2:#2997ff;--cyan:#0071e3;--cyan-2:#64d2ff;--green:#34c759;
+  --g-primary:linear-gradient(135deg,#0071e3,#5ac8fa);
+  --g-accent:linear-gradient(100deg,#0071e3,#5856d6 55%,#af52de);
+  --font-d:-apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue",Arial,sans-serif;
+  --font-b:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",Arial,sans-serif;
+  --r:20px;--r-lg:28px;--r-xl:36px;--max:1180px;
+}
+body{background:#f5f5f7;color:var(--text);letter-spacing:-.012em}
+.bg-layer{background:linear-gradient(180deg,#fff 0%,#f5f5f7 38%,#fff 100%)}
+.bg-grid,.bg-rays,.bg-grain{display:none}.bg-glow{opacity:.35;filter:blur(100px);top:-220px;background:radial-gradient(circle,#c9e8ff 0%,transparent 66%)}
+.nav{background:rgba(250,250,252,.78);border-bottom:1px solid rgba(0,0,0,.06);backdrop-filter:saturate(180%) blur(22px);-webkit-backdrop-filter:saturate(180%) blur(22px)}
+.nav-brand img{filter:none}.nav-brand span,.nav-links a{color:#1d1d1f}.nav-links a:hover{color:#0071e3}
+.nav-cta,.btn-primary{background:#0071e3!important;color:#fff!important;box-shadow:none!important;border-color:#0071e3!important}
+.nav-cta:hover,.btn-primary:hover{background:#0077ed!important;transform:scale(1.02)}
+.hero{background:#fff;min-height:min(860px,100svh);overflow:hidden}
+.hero::after{content:"";position:absolute;inset:auto -10% -45% 35%;height:76%;background:radial-gradient(circle,#d9efff,transparent 68%);pointer-events:none}
+.hero-bg{right:0;width:56%;opacity:1;mask-image:linear-gradient(90deg,transparent 0%,#000 34%);-webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 34%)}
+.hero-bg::after{background:linear-gradient(90deg,#fff 0%,transparent 55%)}
+.hero h1{font-size:clamp(54px,7.3vw,98px);line-height:.96;letter-spacing:-.065em;color:#1d1d1f}
+.hero h1 .l2,.grad{background:var(--g-accent);-webkit-background-clip:text;background-clip:text;color:transparent}
+.badge,.hero-tag,.trusted,.svc-card,.niche-wrap,.testimonio,.wa-mock,.cliente,.cta-final,.custom{box-shadow:0 18px 50px rgba(0,0,0,.06)}
+.badge{background:rgba(255,255,255,.75);border-color:rgba(0,0,0,.08);color:#1d1d1f;backdrop-filter:blur(20px)}
+.hero-sub,.section-sub,.svc-block p,.custom p,.cta-final p{color:#6e6e73}
+.btn{border-color:rgba(0,0,0,.12);background:rgba(255,255,255,.78);color:#1d1d1f}
+.btn:hover{background:#fff;border-color:rgba(0,0,0,.2)}
+.trusted{background:#fff;border-color:rgba(0,0,0,.06)}
+.section{padding-top:120px;padding-bottom:120px}.section-title{letter-spacing:-.05em}
+.svc-card,.niche-wrap,.testimonio,.wa-mock,.cliente,.custom{background:rgba(255,255,255,.86);border-color:rgba(0,0,0,.07)}
+.svc-card:hover,.cliente:hover{border-color:rgba(0,113,227,.22);box-shadow:0 28px 70px rgba(0,0,0,.09)}
+.svc-icon,.check{background:#eef7ff!important;color:#0071e3!important}.svc-label,.section-tag,.svc-cta{color:#0071e3}
+.video-frame,.svc-mock{background:#fff;border-color:rgba(0,0,0,.09);box-shadow:0 20px 50px rgba(0,0,0,.12)}
+.niche-card{color:#6e6e73}.niche-card.active{background:#1d1d1f;color:#fff;border-color:#1d1d1f}
+.cta-final{background:linear-gradient(145deg,#fff,#eef7ff);border-color:rgba(0,0,0,.06)}
+footer{color:#6e6e73;border-top-color:rgba(0,0,0,.08)}
+
+/* Language-first welcome */
+.language-gate{position:fixed;inset:0;z-index:20000;display:grid;place-items:center;padding:24px;background:rgba(245,245,247,.78);backdrop-filter:blur(32px) saturate(170%);-webkit-backdrop-filter:blur(32px) saturate(170%);transition:opacity .65s ease,visibility .65s ease}
+.language-gate.is-leaving{opacity:0;visibility:hidden;pointer-events:none}
+.language-card{width:min(620px,100%);padding:56px 46px 42px;text-align:center;background:rgba(255,255,255,.88);border:1px solid rgba(255,255,255,.9);border-radius:38px;box-shadow:0 34px 100px rgba(0,0,0,.16);animation:gateIn .85s cubic-bezier(.2,.8,.2,1) both}
+.language-mark{width:74px;height:74px;margin:0 auto 24px;border-radius:22px;display:grid;place-items:center;background:linear-gradient(145deg,#0a84ff,#5856d6);box-shadow:0 16px 34px rgba(0,113,227,.28);color:#fff;font-size:28px;font-weight:700}
+.language-card h1{font-size:clamp(36px,7vw,56px);line-height:1;letter-spacing:-.055em;margin-bottom:14px}
+.language-card p{color:#6e6e73;font-size:18px;margin-bottom:32px}
+.language-options{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.language-option{padding:18px;border-radius:16px;background:#f5f5f7;color:#1d1d1f;font-weight:650;transition:.25s ease;border:1px solid transparent}
+.language-option span{display:block;font-size:12px;font-weight:500;color:#86868b;margin-top:3px}
+.language-option:hover{background:#0071e3;color:#fff;transform:translateY(-2px);box-shadow:0 12px 26px rgba(0,113,227,.22)}
+.language-option:hover span{color:rgba(255,255,255,.75)}
+.language-switch{margin-left:8px;padding:8px 11px;border-radius:999px;background:#ededf0;color:#1d1d1f;font-size:12px;font-weight:700}
+body:not(.site-ready) .nav,body:not(.site-ready) section,body:not(.site-ready) footer{opacity:0}
+body.site-ready .nav{animation:siteEnter .7s .05s both}body.site-ready .hero{animation:siteEnter .9s .12s both}body.site-ready .trusted{animation:siteEnter .9s .22s both}
+@keyframes gateIn{from{opacity:0;transform:translateY(24px) scale(.96)}to{opacity:1;transform:none}}
+@keyframes siteEnter{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+@media(max-width:700px){.language-card{padding:42px 22px 28px;border-radius:30px}.language-options{grid-template-columns:1fr}.hero-bg{width:100%;opacity:.28;mask-image:linear-gradient(180deg,transparent,#000);-webkit-mask-image:linear-gradient(180deg,transparent,#000)}.hero h1{font-size:clamp(49px,15vw,72px)}.section{padding-top:84px;padding-bottom:84px}.language-switch{margin:0 0 0 auto}}
+@media(prefers-reduced-motion:reduce){.language-card,body.site-ready .nav,body.site-ready .hero,body.site-ready .trusted{animation:none}.language-gate{transition:none}}
 </style>
 </head>
 <body>
+
+<div class="language-gate" id="languageGate" role="dialog" aria-modal="true" aria-labelledby="languageTitle">
+  <div class="language-card">
+    <div class="language-mark" aria-hidden="true">M</div>
+    <h1 id="languageTitle">Choose your language</h1>
+    <p>Elige tu idioma para comenzar · Choose your language to begin</p>
+    <div class="language-options">
+      <button class="language-option" type="button" data-language="es">Español<span>Continuar en español</span></button>
+      <button class="language-option" type="button" data-language="en">English<span>Continue in English</span></button>
+    </div>
+  </div>
+</div>
 
 <!-- ============================================
      PRELOADER · silueta animada del logo
@@ -2036,6 +2111,7 @@ footer .ft-brand img{width:22px;height:22px;object-fit:contain}
       <a href="#clientes">Clientes</a>
     </div>
     <a href="#contacto" class="nav-cta">Solicitar demo</a>
+    <button class="language-switch" id="languageSwitch" type="button" aria-label="Cambiar idioma">ES / EN</button>
   </div>
 </nav>
 
@@ -2749,6 +2825,69 @@ footer .ft-brand img{width:22px;height:22px;object-fit:contain}
 </footer>
 
 <script>
+/* Language selection and bilingual UI */
+const COPY_EN = {
+  'Servicios':'Services','Industrias':'Industries','Resultados':'Results','Clientes':'Clients','Solicitar demo':'Request a demo',
+  'Bryan Carrión · Sistemas con IA':'Bryan Carrión · AI Systems','Impulsa tu negocio':'Grow your business','con IA':'with AI',
+  'Sistemas con IA que hacen el trabajo por ti: chatbots, atención 24/7, agenda automática y procesos que dejan de robarte tiempo.':'AI systems that work for you: chatbots, 24/7 service, automated scheduling, and processes that give you back your time.',
+  'Ver soluciones':'Explore solutions','Bryan Carrión':'Bryan Carrión','Te respondo en minutos':'I reply within minutes',
+  'Soluciones aplicadas en industrias reales':'Solutions working in real industries','Restaurantes':'Restaurants','Abogados':'Law firms','Clínicas':'Clinics','Ferreterías':'Hardware stores','Y más':'And more',
+  'Soluciones que ofrezco':'What I offer','IA aplicada con':'Applied AI with','trabajos reales':'real-world work',
+  'Cada servicio ataca un problema concreto. Acá ves cómo funciona y un ejemplo de lo que ya hice.':'Every service solves a real problem. See how it works and examples already in use.',
+  'Atención Automática 24/7 con IA':'24/7 AI Customer Service','Qué hace':'What it does','Cómo funciona':'How it works','Trabajo realizado':'Delivered work',
+  'Responde automáticamente a tus clientes en cualquier momento, sin que tengas que estar disponible.':'Automatically replies to your customers at any time, even when you are unavailable.',
+  'Se integra con WhatsApp o tu web para responder preguntas, enviar información y guiar al cliente hasta la compra.':'Connects to WhatsApp or your website to answer questions, share information, and guide customers toward a purchase.',
+  'Chatbots activos para abogados, clínicas y servicios profesionales — atienden consultas 24/7.':'Live chatbots for law firms, clinics, and professional services — handling inquiries 24/7.',
+  'Ver demo en video →':'Watch video demo →','Probar por WhatsApp':'Try on WhatsApp','Sistema Inteligente de Pedidos y Ventas':'Smart Ordering and Sales System',
+  'Permite a tus clientes hacer pedidos de forma rápida y organizada, aumentando tus ventas.':'Lets customers order quickly and easily while helping increase sales.',
+  'El cliente selecciona productos, envía su pedido y el sistema registra automáticamente la información para tu control.':'Customers select products, submit their order, and the system records everything automatically.',
+  'Ver sitio en vivo →':'View live site →','Ver demo de chatbot':'View chatbot demo','Hacer pedido →':'Place order →','Click para abrir el sitio real':'Click to open the live website',
+  'Automatización Administrativa y Control Financiero':'Administrative Automation and Financial Control','Organiza automáticamente ingresos, gastos y procesos administrativos.':'Automatically organizes income, expenses, and administrative workflows.',
+  'Se conecta con hojas de cálculo o sistemas digitales que registran y procesan la información sin trabajo manual.':'Connects with spreadsheets or digital systems that record and process information without manual work.',
+  'Soluciones por industria':'Solutions by industry','Una solución para cada':'A solution for every','tipo de negocio':'kind of business',
+  'Elige tu industria y mira cómo MateAI trabaja específicamente para ti.':'Choose your industry and see how MateAI works specifically for you.',
+  'Otros':'Other','¿No ves tu industria?':'Don’t see your industry?','Cuéntanos qué automatizar y te armamos una solución a medida.':'Tell us what you want to automate and we’ll design a tailored solution.',
+  '¿Qué quieres automatizar?':'What would you like to automate?','Enviar':'Send','Resultados reales':'Real results','Lo que dicen':'What they say','y lo que les funciona':'and what works for them',
+  'Conversaciones reales, números reales. Así trabaja la IA cuando un cliente escribe.':'Real conversations, real numbers. This is how AI works when a customer reaches out.',
+  'Confianza':'Trusted by','Negocios que ya':'Businesses that already','confían en MateAI':'trust MateAI','Pequeñas y medianas empresas que dejaron de perder clientes por no responder a tiempo.':'Small and medium businesses that stopped losing customers because of slow replies.',
+  '¿Listo para que tu negocio':'Ready for your business to','trabaje solo':'run itself','Hablas directamente con Bryan Carrión. Te muestro una demo en menos de 15 minutos, sin compromiso. Si te sirve, lo armamos para ti.':'Talk directly with Bryan Carrión. I’ll show you a demo in under 15 minutes, with no commitment. If it fits, we’ll build it for you.',
+  'Escribirle a Bryan por WhatsApp':'Message Bryan on WhatsApp','Automatización con IA para tu negocio':'AI automation for your business',
+  'en línea · bot activo':'online · bot active','Hola, ¿están abiertos hoy?':'Hi, are you open today?','¡Sí! Hasta las 10pm 🕙 ¿Quieres reservar o pedir delivery?':'Yes! Until 10 PM 🕙 Would you like to book or order delivery?','Reserva para 4, a las 8':'A table for 4 at 8 PM','Perfecto ✅ Mesa para 4 confirmada hoy 8:00 PM. Te llegará un recordatorio.':'Perfect ✅ Table for 4 confirmed today at 8 PM. You’ll receive a reminder.','Genial, gracias 🙌':'Great, thanks 🙌'
+};
+const originalText = new WeakMap();
+function translatePage(lang){
+  document.documentElement.lang = lang;
+  document.title = lang === 'en' ? 'MateAI · The future of intelligent automation' : 'MateAI · El futuro de la automatización inteligente';
+  const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  let node;
+  while((node = walker.nextNode())){
+    if(node.parentElement?.closest('#languageGate,script,style')) continue;
+    if(!originalText.has(node)) originalText.set(node,node.nodeValue);
+    const source = originalText.get(node);
+    const clean = source.trim();
+    if(!clean) continue;
+    const translated = lang === 'en' ? COPY_EN[clean] : clean;
+    if(translated) node.nodeValue = source.replace(clean,translated);
+  }
+  document.querySelectorAll('[placeholder]').forEach(el=>{
+    if(!el.dataset.placeholderEs) el.dataset.placeholderEs=el.placeholder;
+    el.placeholder=lang==='en'?(COPY_EN[el.dataset.placeholderEs]||el.dataset.placeholderEs):el.dataset.placeholderEs;
+  });
+  localStorage.setItem('mateai-language',lang);
+  window.dispatchEvent(new CustomEvent('mateai-language',{detail:{lang}}));
+}
+const gate=document.getElementById('languageGate');
+function enterSite(lang){
+  translatePage(lang);
+  gate.classList.add('is-leaving');
+  document.body.classList.add('site-ready');
+  setTimeout(()=>gate.hidden=true,700);
+}
+gate.querySelectorAll('[data-language]').forEach(btn=>btn.addEventListener('click',()=>enterSite(btn.dataset.language)));
+document.getElementById('languageSwitch').addEventListener('click',()=>{
+  gate.hidden=false;requestAnimationFrame(()=>gate.classList.remove('is-leaving'));
+});
+
 const NICHES = {
   restaurantes:{
     title:'Para <span class="grad">Restaurantes</span>',
@@ -2807,6 +2946,16 @@ const NICHES = {
   }
 };
 
+const NICHES_EN = {
+  restaurantes:{title:'For <span class="grad">Restaurants</span>',lead:'Automated WhatsApp orders and bookings. Your customers order, you cook.',feats:['Instantly confirmed automated bookings','Error-free delivery orders without calls','24/7 service, even after hours','Integration with your menu and inventory']},
+  abogados:{title:'For <span class="grad">Law Firms</span>',lead:'Qualify inquiries, schedule appointments, and answer common questions while you focus on cases.',feats:['Automated initial consultation scheduling','Qualify leads before they take your time','Instant answers to frequent questions','Complete history for every client']},
+  clinicas:{title:'For <span class="grad">Clinics</span>',lead:'Automated appointments, reminders, and follow-up. Reduce no-shows and free up reception.',feats:['Booking and rescheduling without calls','Automatic appointment reminders','Initial symptom triage','Post-visit follow-up']},
+  ferreterias:{title:'For <span class="grad">Hardware Stores</span>',lead:'Instant inventory checks, quotes, and WhatsApp orders.',feats:['24/7 real-time inventory inquiries','Automatic quotes with current prices','Seamless orders and delivery','Serve multiple customers at once']},
+  otros:{title:'For <span class="grad">Your Business</span>',lead:'We adapt MateAI to any industry with automated service, sales, and bookings.',feats:['24/7 service tailored to your field','Instant appointments and quotes','Never lose a customer to a slow reply','Integration with your current systems']}
+};
+let currentLanguage='es';
+window.addEventListener('mateai-language',e=>{currentLanguage=e.detail.lang;const active=document.querySelector('.niche-card.active')?.dataset.niche||'restaurantes';selectNiche(active)});
+
 const cards = document.querySelectorAll('.niche-card');
 const titleEl = document.getElementById('nicheTitle');
 const leadEl = document.getElementById('nicheLead');
@@ -2814,7 +2963,8 @@ const featsEl = document.getElementById('nicheFeats');
 const videoEl = document.getElementById('nicheVideo');
 
 function selectNiche(key){
-  const data = NICHES[key];
+  const base = NICHES[key];
+  const data = currentLanguage==='en' ? {...base,...NICHES_EN[key],video:base.video} : base;
   if(!data) return;
   cards.forEach(c=>c.classList.toggle('active', c.dataset.niche===key));
   titleEl.innerHTML = data.title;
