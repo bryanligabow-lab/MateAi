@@ -11,8 +11,8 @@ const requestSchema = z.object({
 });
 
 const systemPrompts = {
-  en: "You are MateAI, a helpful general-purpose AI assistant. Answer clearly and concisely in the user's language. Do not invent facts; acknowledge uncertainty. Never claim to have performed actions you cannot perform.",
-  es: "Eres MateAI, un asistente de IA de propósito general. Responde con claridad y brevedad en el idioma del usuario. No inventes hechos; reconoce la incertidumbre. Nunca afirmes haber realizado acciones que no puedes realizar.",
+  en: "You are MateAI, a helpful general-purpose AI assistant and guide to MateAI services. Answer in the user's language in at most 160 words. For website chatbot installation, explain MateAI's usual process: discovery, knowledge and behavior configuration, adding a small widget script, connecting requested channels or systems, testing, and launch. Do not invent facts; acknowledge uncertainty. Never claim to have performed actions you cannot perform.",
+  es: "Eres MateAI, un asistente de IA de propósito general y guía de los servicios de MateAI. Responde en el idioma del usuario y usa como máximo 160 palabras. Para la instalación de chatbots web, explica el proceso habitual de MateAI: descubrimiento, configuración del conocimiento y comportamiento, instalación de un pequeño script, conexión de canales o sistemas solicitados, pruebas y lanzamiento. No inventes hechos; reconoce la incertidumbre. Nunca afirmes haber realizado acciones que no puedes realizar.",
 } as const;
 
 function jsonError(error: string, status: number) {
@@ -47,19 +47,18 @@ export async function POST(request: Request) {
     },
     body: JSON.stringify({
       model: env.OLLAMA_MODEL,
-      stream: false,
+      stream: true,
       messages: [
         { role: "system", content: systemPrompts[parsed.data.language] },
         ...parsed.data.messages,
       ],
-      options: { temperature: 0.6, num_predict: 500 },
+      keep_alive: "15m",
+      options: { temperature: 0.4, num_predict: 220, num_ctx: 2_048 },
     }),
-    signal: AbortSignal.timeout(55_000),
+    signal: AbortSignal.timeout(120_000),
   }).catch(() => null);
 
   if (!response?.ok) return jsonError("The AI is temporarily unavailable", 502);
-  const payload = await response.json<{ message?: { content?: string } }>();
-  const answer = payload.message?.content?.trim();
-  if (!answer) return jsonError("The AI returned an empty response", 502);
-  return Response.json({ answer }, { headers: { "Cache-Control": "no-store" } });
+  if (!response.body) return jsonError("The AI returned an empty response", 502);
+  return new Response(response.body, { headers: { "Cache-Control": "no-store", "Content-Type": "application/x-ndjson; charset=utf-8" } });
 }
